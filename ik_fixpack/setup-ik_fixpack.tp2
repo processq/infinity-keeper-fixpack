@@ -336,3 +336,43 @@ ACTION_BASH_FOR ~override~ ~^.+\.bcs$~ BEGIN
       ~RE\1\2AC\10OB\10 0 0 0 0 0 0 0 0 0 0 0 ""OB\1OB\10 0 0 0 0 0 0 0 0 0 0 0 ""OB\1OB\10 0 0 0 0 0 0 0 0 0 0 0 ""OB\10 0 0 0 0"" "" AC\1RE~
   BUT_ONLY
 END
+
+// ---------------------------------------------------------------------------------------------
+// Auto-ported classic mods (roadmap 6.4, K1: refused only by their own game check). Each is a
+// replacement: install this before the mod, and Infinity Keeper installs the mod from the corrected
+// copy; the mod's own files are never changed. The files show nothing else tied to the classic
+// games for the components opened up (catalog notes); what they don't show is checked by a test
+// install before the fix ships.
+
+// Golden Horse 1.9e: component 0 requires GAME_IS ~tob bgt~, false on BG2:EE and EET, though the
+// content it touches (ar6200.bcs, the ToB rows of pdialog.2da and interdia.2da) is in the
+// Enhanced Editions too. Evidence: golden_horse/golden_horse.tp2 line 16.
+BEGIN @400 DESIGNATED 400 LABEL ~ik_fixpack_golden_horse_ee~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 98998
+  STR_VAR source = ~golden_horse/golden_horse.tp2~ target = ~golden_horse.tp2~ edits = ~ik_fixpack/fixes/golden_horse/edits.tpp~ END
+
+// Icen Archive 2: component 1 (Excludes Party Members) requires ENGINE_IS ~bg2~ or ~tob~, false on
+// the Enhanced Editions; it only copies two files and adds an item to creatures. Evidence:
+// SETUP-#!ICEN-ARCHIVE.tp2 lines 34-44. The script sits in the game folder's top, so its copy goes
+// in the mod's own folder under the other form of its name.
+BEGIN @410 DESIGNATED 410 LABEL ~ik_fixpack_icen_archive_ee~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 5106
+  STR_VAR source = ~SETUP-#!ICEN-ARCHIVE.tp2~ target = ~#!Icen-Archive/#!ICEN-ARCHIVE.tp2~ edits = ~ik_fixpack/fixes/icen_archive/edits.tpp~ END
+
+// ktweaks v1.06: every component requires GAME_IS ~bgt~ (EET is the Enhanced Editions' BG1+BG2
+// game). Evidence: ktweaks/setup-ktweaks.tp2 lines 11, 17, 29, 35, 41, 48, 54; nothing else in it
+// or its tph files tests the game.
+BEGIN @420 DESIGNATED 420 LABEL ~ik_fixpack_ktweaks_eet~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 1468
+  STR_VAR source = ~ktweaks/setup-ktweaks.tp2~ target = ~setup-ktweaks.tp2~ edits = ~ik_fixpack/fixes/ktweaks/edits.tpp~ END
+
+// Rose NPC v0.03 open beta: requires GAME_IS ~bgt~. Evidence: rose/setup-rose.tp2 line 9.
+BEGIN @430 DESIGNATED 430 LABEL ~ik_fixpack_rose_eet~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 449
+  STR_VAR source = ~rose/setup-rose.tp2~ target = ~setup-rose.tp2~ edits = ~ik_fixpack/fixes/rose/edits.tpp~ END
+
+// wonnimchunha's Portrait Mod v1: the BG2 portrait components require GAME_IS ~SOA~ or ~TOB~; each
+// copies one folder of bitmaps into override. Evidence: wonnimchunha/wonnimchunha.tp2 lines 56-73.
+BEGIN @440 DESIGNATED 440 LABEL ~ik_fixpack_wonnimchunha_ee~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 14057
+  STR_VAR source = ~wonnimchunha/wonnimchunha.tp2~ target = ~wonnimchunha.tp2~ edits = ~ik_fixpack/fixes/wonnimchunha/edits.tpp~ END

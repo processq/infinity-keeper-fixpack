@@ -107,3 +107,41 @@ BEGIN
     END
   BUT_ONLY
 END
+
+/*
+ * IK_FIXPACK_EDIT_EACH (patch function)
+ *   Like IK_FIXPACK_EDIT for a text the author repeats (the same game check in each component):
+ *   from `after` on (a text that must appear exactly once; empty: the whole file), `old` must
+ *   appear exactly `count` times, and each becomes `new`. Anything else stops the component.
+ */
+DEFINE_PATCH_FUNCTION IK_FIXPACK_EDIT_EACH
+  INT_VAR count = 1
+  STR_VAR old = ~~ new = ~~ after = ~~
+BEGIN
+  SET ik_from = 0
+  PATCH_IF NOT ~%after%~ STRING_EQUAL ~~ BEGIN
+    SET ik_from = INDEX_BUFFER (CASE_SENSITIVE EXACT_MATCH ~%after%~)
+    PATCH_IF ik_from < 0 BEGIN
+      PATCH_FAIL @1003
+    END
+    PATCH_IF (INDEX_BUFFER (CASE_SENSITIVE EXACT_MATCH ~%after%~ (ik_from + 1))) >= 0 BEGIN
+      PATCH_FAIL @1004
+    END
+  END
+  SET ik_found = 0
+  SET ik_at = INDEX_BUFFER (CASE_SENSITIVE EXACT_MATCH ~%old%~ ik_from)
+  WHILE ik_at >= 0 BEGIN
+    SET ik_found += 1
+    SET ik_at = INDEX_BUFFER (CASE_SENSITIVE EXACT_MATCH ~%old%~ (ik_at + 1))
+  END
+  PATCH_IF ik_found != count BEGIN
+    PATCH_FAIL @1005
+  END
+  SET ik_at = INDEX_BUFFER (CASE_SENSITIVE EXACT_MATCH ~%old%~ ik_from)
+  WHILE ik_at >= 0 BEGIN
+    DELETE_BYTES ik_at (STRING_LENGTH ~%old%~)
+    INSERT_BYTES ik_at (STRING_LENGTH ~%new%~)
+    WRITE_ASCIIE ik_at ~%new%~
+    SET ik_at = INDEX_BUFFER (CASE_SENSITIVE EXACT_MATCH ~%old%~ (ik_at + STRING_LENGTH ~%new%~))
+  END
+END
