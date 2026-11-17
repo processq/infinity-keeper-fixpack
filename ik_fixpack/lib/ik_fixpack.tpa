@@ -145,3 +145,34 @@ BEGIN
     SET ik_at = INDEX_BUFFER (CASE_SENSITIVE EXACT_MATCH ~%old%~ (ik_at + STRING_LENGTH ~%new%~))
   END
 END
+
+/*
+ * IK_FIXPACK_IDS_ADD_MISSING (action function)
+ *   Adds to the IDS list `ids` (e.g. ~stats.ids~) each line of `from` (a value and a name, as in
+ *   an IDS list) whose name `ids` doesn't already have. Nothing is reordered or removed, so every
+ *   name other mods or scripts already use keeps its value. A line break goes at the end of `ids`
+ *   first, so an added line never joins its last line.
+ */
+DEFINE_ACTION_FUNCTION IK_FIXPACK_IDS_ADD_MISSING
+  STR_VAR ids = ~~ from = ~~
+BEGIN
+  COPY_EXISTING ~%ids%~ ~override~
+    PATCH_IF BUFFER_LENGTH > 0 BEGIN
+      READ_BYTE (BUFFER_LENGTH - 1) ik_last
+      PATCH_IF ik_last != 10 BEGIN
+        SET ik_end = BUFFER_LENGTH
+        INSERT_BYTES ik_end 2
+        WRITE_ASCIIE ik_end ~%WNL%~
+      END
+    END
+  BUT_ONLY
+  COPY - ~%from%~ ~override~
+    READ_2DA_ENTRIES_NOW ik_ids_rows 2
+    FOR (ik_r = 0; ik_r < ik_ids_rows; ++ik_r) BEGIN
+      READ_2DA_ENTRY_FORMER ik_ids_rows ik_r 0 ik_value
+      READ_2DA_ENTRY_FORMER ik_ids_rows ik_r 1 ik_name
+      INNER_ACTION BEGIN
+        APPEND ~%ids%~ ~%ik_value% %ik_name%~ UNLESS ~[ %TAB%]%ik_name%[ %TAB%%MNL%]*$~
+      END
+    END
+END

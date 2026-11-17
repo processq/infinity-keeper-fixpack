@@ -371,3 +371,25 @@ LAF IK_FIXPACK_REPLACE INT_VAR size = 1468
 BEGIN @440 DESIGNATED 440 LABEL ~ik_fixpack_wonnimchunha_ee~
 LAF IK_FIXPACK_REPLACE INT_VAR size = 14057
   STR_VAR source = ~wonnimchunha/wonnimchunha.tp2~ target = ~wonnimchunha.tp2~ edits = ~ik_fixpack/fixes/wonnimchunha/edits.tpp~ END
+
+// ---------------------------------------------------------------------------------------------
+// Game-check group: fixes that a test install on a real game checks before they ship.
+
+// aTweaks v4.53: its Detectable Spells setup (atweaks/lib/ds/ds.tph, run once by the first aTweaks
+// component that loads it) leaves STATS.IDS damaged (see fixes/atweaks_stats_ids/edits.tpp). This
+// runs Detectable Spells from a corrected copy of that file before aTweaks, and leaves the marker
+// aTweaks checks for (override/RR#DS.RR, atweaks/lib/ds.tpa line 3), so aTweaks doesn't run it
+// again. Install it before aTweaks. Evidence: a test copy of BG2:EE, STATS.IDS 216 lines before and
+// 741 after aTweaks' setup; test's 200-mod build, 946 scripts that no longer decompile and
+// recompile.
+BEGIN @500 DESIGNATED 500 LABEL ~ik_fixpack_atweaks_stats_ids~
+REQUIRE_PREDICATE FILE_EXISTS ~atweaks/lib/ds/ds.tph~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 29931
+  STR_VAR source = ~atweaks/lib/ds/ds.tph~ target = ~ik_fixpack/work/atweaks_ds.tph~ edits = ~ik_fixpack/fixes/atweaks_stats_ids/edits.tpp~ END
+ACTION_IF NOT FILE_EXISTS_IN_GAME ~rr#ds.rr~ BEGIN
+  COPY_EXISTING ~sw1h01.itm~ ~override/rr#ds.rr~
+  OUTER_SPRINT path ~atweaks/lib/ds~
+  INCLUDE ~ik_fixpack/work/atweaks_ds.tph~
+  LAF detectable_spells_setup STR_VAR path END
+  LAF detectable_spells STR_VAR path table = ~cddetect.2da~ END
+END

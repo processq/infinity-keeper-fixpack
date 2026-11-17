@@ -16,7 +16,7 @@ From the mods' own files first: every fix is checked in the mod's files before i
 ## Layout
 
 - `ik_fixpack/setup-ik_fixpack.tp2`: the components, each with a `DESIGNATED` number that never changes and a `LABEL` `ik_fixpack_<mod>_<what>`.
-- `ik_fixpack/lib/ik_fixpack.tpa`: `IK_FIXPACK_REPLACE` and `IK_FIXPACK_EDIT`, used by the replacement fixes.
+- `ik_fixpack/lib/ik_fixpack.tpa`: `IK_FIXPACK_REPLACE`, `IK_FIXPACK_EDIT` and `IK_FIXPACK_EDIT_EACH`, used by the replacement fixes; `IK_FIXPACK_IDS_ADD_MISSING`, which adds to an IDS list only the names it lacks.
 - `ik_fixpack/tra/<language>/setup.tra`: the messages.
 
 ## Licence

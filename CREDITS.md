@@ -18,3 +18,4 @@ Each fix names where the bug was found and who found or fixed it first. The list
 | ik_fixpack_kittomes_jamdak | Kit Tomes (commit 2da5257) | Big World Fixpack: kittomes mage2.baf | Big World Fixpack contributors |
 | ik_fixpack_spgaunt_bodhi | Spellhold Gauntlet v1.16 | Big World Fixpack: spgaunt AR1512.baf | Big World Fixpack contributors |
 | ik_fixpack_revisedbattles_local | Revised Battles v6.7 | Big World Fixpack: revisedbattles b#tar05.baf | Big World Fixpack contributors |
+| ik_fixpack_atweaks_stats_ids | aTweaks v4.53 | Infinity Keeper's Diagnose on a test build (946 scripts that no longer recompile), traced to atweaks/lib/ds/ds.tph | Infinity Keeper test |
