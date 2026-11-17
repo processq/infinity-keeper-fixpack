@@ -393,3 +393,33 @@ ACTION_IF NOT FILE_EXISTS_IN_GAME ~rr#ds.rr~ BEGIN
   LAF detectable_spells_setup STR_VAR path END
   LAF detectable_spells STR_VAR path table = ~cddetect.2da~ END
 END
+
+// ---------------------------------------------------------------------------------------------
+// Secret of Bone Hill (EET) v34 and git-7644535 (the same files apart from BHYALTA.d): quest
+// scripts and dialogues that can never fire as written. Install it right after Bone Hill.
+// - Twelve area scripts spawn their creatures under OnCreation(), which an area script sees only
+//   when the area is first made; a party that arrives before the other conditions hold (BH1001:
+//   level 4 and two in the party) never gets the spawn. Each block already sets its own variable,
+//   so without OnCreation() it still runs once. Evidence: BonehillEET/bafs/BH0100.BAF, BH1000-1004,
+//   BH1100, BH1200, BH2100, BH2101, BH2111, BH2301, line 2 of each (COMPILE, tp2 line 1314).
+// - Dialogues check Fabio as "BHFABIO" (his death variable is FABIO, bhfabio.cre offset 0x280), so
+//   the mayor, Fair and Harper never hand the talk to him, and the mayor as "BHARRNESS" (BHARRNES.cre:
+//   BHARRNES), so Pell offers the water-quest reply after the mayor died (fixes/bonehill/).
+//   Evidence: d/BHARRNES.d 129-130, d/BHFAIR.d 46, d/BHHARPER.d 20-22, BGT/D/BHPELL.d 390.
+// Found first by the Big World Fixpack (bonehillv275); checked again in BonehillEET, our own edits.
+BEGIN @510 DESIGNATED 510 LABEL ~ik_fixpack_bonehill_quest~
+REQUIRE_PREDICATE GAME_IS ~eet~ @512
+REQUIRE_PREDICATE MOD_IS_INSTALLED ~setup-bonehilleet.tp2~ ~0~ @511
+ACTION_FOR_EACH ik_area IN ~bh0100~ ~bh1000~ ~bh1001~ ~bh1002~ ~bh1003~ ~bh1004~ ~bh1100~ ~bh1200~ ~bh2100~ ~bh2101~ ~bh2111~ ~bh2301~ BEGIN
+  ACTION_IF FILE_EXISTS_IN_GAME ~%ik_area%.bcs~ BEGIN
+    OUTER_SPRINT ik_guard ~BP_MoreStooges~
+    ACTION_IF ~%ik_area%~ STRING_EQUAL_CASE ~bh0100~ BEGIN OUTER_SPRINT ik_guard ~BHPellSpawn1~ END
+    ACTION_IF ~%ik_area%~ STRING_EQUAL_CASE ~bh1000~ BEGIN OUTER_SPRINT ik_guard ~BHBoneHillQuest~ END
+    COPY_EXISTING ~%ik_area%.bcs~ ~override~
+      DECOMPILE_AND_PATCH BEGIN
+        REPLACE_TEXTUALLY CASE_INSENSITIVE ~OnCreation()[ %TAB%%LNL%%MNL%]+\(Global\(LT\)?("%ik_guard%"\)~ ~\1~
+      END
+    BUT_ONLY
+  END
+END
+COMPILE ~ik_fixpack/fixes/bonehill/bonehill.d~

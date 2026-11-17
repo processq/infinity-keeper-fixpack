@@ -44,4 +44,7 @@
 @420 = ~ktweaks: install on EET (corrected install script)~
 @440 = ~wonnimchunha's Portrait Mod: install the BG2 portraits on BG2:EE and EET (corrected install script)~
 @500 = ~aTweaks: Detectable Spells without damaging STATS.IDS (install before aTweaks)~
+@510 = ~Secret of Bone Hill (EET): quest scripts and dialogues that never fire~
+@511 = ~Needs Secret of Bone Hill (EET) installed first.~
+@512 = ~This fix is for EET only.~
 @1006 = ~Infinity Keeper Fixpack: install the mod this fixes first (its files must be in the game folder).~
