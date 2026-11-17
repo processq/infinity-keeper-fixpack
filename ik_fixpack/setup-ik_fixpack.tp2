@@ -51,33 +51,22 @@ ACTION_IF FILE_EXISTS_IN_GAME ~wwboo.spl~ AND FILE_EXISTS_IN_GAME ~nminscl.bmp~ 
 END
 
 // ---------------------------------------------------------------------------------------------
-// Check the Bodies v3.0: the game hangs when Farrahd's messenger adds the banquet invitation to the
-// journal, because the journal text isn't valid UTF-8 (English only: the mod converts its other
-// languages for the Enhanced Editions, not English).
-// Evidence: CtB/Language/English/CBSFMESS.TRA line 4 has byte 0xE9 in "debutante" (Windows-1252);
-// CtB/dialogs/translate/CBSFMESS.D line 16 AddJournalEntry(@4,INFO); setup-ctb.tp2 line 56 runs
-// HANDLE_CHARSETS only when the language isn't English. Source: Check the Bodies issues #9 ("there's
-// some strange symbol in text in journal entry that makes game crash") and #16 ("this bug is still
-// present in v3.0. After speaking with the messenger the game hangs").
-// Other English texts of the mod have the same kind of byte ("Faerun" with u-circumflex); only this
-// one is reported to hang the game, and only this one is fixed here.
-BEGIN @120 DESIGNATED 120 LABEL ~ik_fixpack_ctb_journal_text~
-REQUIRE_PREDICATE MOD_IS_INSTALLED ~setup-ctb.tp2~ ~0~ @121
-ACTION_IF FILE_EXISTS_IN_GAME ~cbsfmess.dlg~ BEGIN
-  OUTER_SET ik_journal = 0 - 1
-  COPY_EXISTING ~cbsfmess.dlg~ ~override~
-    REPLACE_EVALUATE CASE_INSENSITIVE ~AddJournalEntry(\([0-9]+\),INFO)~ BEGIN
-      SET ik_journal = MATCH1
-    END ~AddJournalEntry(%MATCH1%,INFO)~
-  BUT_ONLY
-  ACTION_IF ik_journal >= 0 BEGIN
-    ACTION_GET_STRREF ik_journal ik_text
-    LAF IK_FIXPACK_TO_UTF8 STR_VAR text = EVAL ~%ik_text%~ RET ik_text = text ik_changed = changed END
-    ACTION_IF ik_changed BEGIN
-      STRING_SET_EVALUATE ik_journal ~%ik_text%~
-    END
-  END
-END
+// Check the Bodies v3.0 (a replacement install script): its English text isn't converted for the
+// Enhanced Editions, so about 30 of its English files reach the game as Windows-1252 ("Faerun"
+// with u-circumflex, "debutante" with e-acute), which the EE games read as UTF-8; the banquet
+// journal entry hangs the game.
+// Evidence: setup-ctb.tp2 line 56 "ACTION_IF NOT ~%LANGUAGE%~ STR_EQ ~english~ BEGIN" around its
+// HANDLE_CHARSETS call (its table already names english => CP1252); CtB/Language/English/
+// CBSFMESS.TRA line 4 byte 0xE9; CtB/dialogs/translate/CBSFMESS.D line 16 AddJournalEntry(@4,INFO).
+// Source: Check the Bodies issues #9 ("there's some strange symbol in text in journal entry that
+// makes game crash") and #16 ("this bug is still present in v3.0. After speaking with the
+// messenger the game hangs").
+// Install this before Check the Bodies; the mod is then installed from the corrected copy
+// setup-ctb.tp2 in the game folder (Infinity Keeper does that by itself). The mod's own files are
+// never changed.
+BEGIN @120 DESIGNATED 120 LABEL ~ik_fixpack_ctb_english_text~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 69705
+  STR_VAR source = ~CtB/setup-ctb.tp2~ target = ~setup-ctb.tp2~ edits = ~ik_fixpack/fixes/ctb/edits.tpp~ END
 
 // ---------------------------------------------------------------------------------------------
 // Thalantyr Item Upgrade v4.5.1: the Sword of the Murderer's Held icon doesn't follow its
