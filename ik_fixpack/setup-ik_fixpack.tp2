@@ -224,3 +224,68 @@ COPY_EXISTING ~b#tar05.bcs~ ~override~
     REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~SetGlobal("#quiver","LOCALb",1)~ ~SetGlobal("b#quiver","LOCALS",1)~
   END
 BUT_ONLY
+
+// ---------------------------------------------------------------------------------------------
+// W_PackMule v1.4b: the mule's scripts follow and check Protagonist, which the Enhanced Editions'
+// scripts don't keep pointing at the main character; Player1 is.
+// Evidence: w_packmule/w_msum.baf lines 7, 8, 20, 22, 34, 45, w_msuma.baf line 13 and w_mule.baf
+// lines 87, 88, 97, 98 (Big World Fixpack w_msum/w_msuma/w_mule.baf.patch). Compiled, the scripts
+// keep the name: WeiDU v251 reads them back with Protagonist.
+BEGIN @260 DESIGNATED 260 LABEL ~ik_fixpack_packmule_player1~
+REQUIRE_PREDICATE (FILE_EXISTS_IN_GAME ~w_msum.bcs~ OR FILE_EXISTS_IN_GAME ~w_mule.bcs~) @261
+ACTION_FOR_EACH ik_script IN ~w_msum~ ~w_msuma~ ~w_mule~ BEGIN
+  ACTION_IF FILE_EXISTS_IN_GAME ~%ik_script%.bcs~ BEGIN
+    COPY_EXISTING ~%ik_script%.bcs~ ~override~
+      DECOMPILE_AND_PATCH BEGIN
+        REPLACE_TEXTUALLY CASE_SENSITIVE ~\bProtagonist\b~ ~Player1~
+      END
+    BUT_ONLY
+  END
+END
+
+// ---------------------------------------------------------------------------------------------
+// Allison v1.8: her drow sound set names the slot UNHAPPY_BREAKING, which SNDSLOT.IDS doesn't have
+// (UNHAPPY_BREAKING_POINT): WeiDU compiles it as 0, so the breaking-point line replaces her
+// INITIAL_MEETING sound. Evidence: allison/scripts/r#aldrow.baf line 19 (COMPILE, setup-allison.tp2
+// line 108); WeiDU v251 reads the installed script back with INITIAL_MEETING in that line, the
+// only INITIAL_MEETING in it.
+BEGIN @270 DESIGNATED 270 LABEL ~ik_fixpack_allison_sound_slot~
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~r#aldrow.bcs~ @271
+COPY_EXISTING ~r#aldrow.bcs~ ~override~
+  DECOMPILE_AND_PATCH BEGIN
+    PATCH_IF (INDEX_BUFFER (~UNHAPPY_BREAKING_POINT~)) < 0 BEGIN
+      REPLACE_TEXTUALLY ~\(SetPlayerSound(Myself,[0-9]+,\)INITIAL_MEETING)~ ~\1UNHAPPY_BREAKING_POINT)~
+    END
+  END
+BUT_ONLY
+
+// ---------------------------------------------------------------------------------------------
+// Allison v1.8: one of her lines says "m'<LORDLADY>", a token the game doesn't know (it shows
+// as written); the game's token is <LADYLORD>. Evidence: allison/english/r#allis.TRA line 119
+// (@118, said in allison/dialogues/r#allis.d line 264), the same in the French, Italian and Russian
+// files (Big World Fixpack r#allis.TRA patches).
+BEGIN @280 DESIGNATED 280 LABEL ~ik_fixpack_allison_ladylord~
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~r#allis.dlg~ @281
+LAF IK_FIXPACK_FIX_TOKEN STR_VAR files = ~^r#allis\.dlg$~ old = ~<LORDLADY>~ new = ~<LADYLORD>~ END
+
+// ---------------------------------------------------------------------------------------------
+// Faren v3: a line says "errand<PRO_BOYGIRL>", a token the game doesn't know; the game's is
+// <PRO_GIRLBOY>. Evidence: Faren/translations/english/fhfq.tra line 108 (@95; Big World Fixpack
+// fhfq.tra.patch). The token is wrong wherever it is, so every Faren dialogue is read.
+BEGIN @290 DESIGNATED 290 LABEL ~ik_fixpack_faren_girlboy~
+REQUIRE_PREDICATE MOD_IS_INSTALLED ~setup-faren.tp2~ ~0~ @291
+LAF IK_FIXPACK_FIX_TOKEN STR_VAR files = ~^b?fhf.*\.dlg$~ old = ~<PRO_BOYGIRL>~ new = ~<PRO_GIRLBOY>~ END
+
+// ---------------------------------------------------------------------------------------------
+// Yikari v1.7: his quest gives the reforged sword to Protagonist, which the Enhanced Editions'
+// dialogues don't keep pointing at the main character; Player1 is. Evidence:
+// Yikari/Dialogue/SDNPCJ.d lines 42 and 47 (Big World Fixpack SDNPCJ.d.patch); WeiDU v251 reads
+// the compiled dialogue back with the same text.
+BEGIN @300 DESIGNATED 300 LABEL ~ik_fixpack_yikari_player1~
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~sdnpcj.dlg~ @301
+COPY_EXISTING ~sdnpcj.dlg~ ~override~
+  DECOMPILE_AND_PATCH BEGIN
+    REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~GiveItemCreate("sw1h51",Protagonist,1,0,0)~ ~GiveItemCreate("sw1h51",Player1,1,0,0)~
+    REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~GiveItemCreate("c2sw1h02",Protagonist,1,0,0)~ ~GiveItemCreate("c2sw1h02",Player1,1,0,0)~
+  END
+BUT_ONLY

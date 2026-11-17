@@ -61,3 +61,49 @@ BEGIN
   INSERT_BYTES first (STRING_LENGTH ~%new%~)
   WRITE_ASCIIE first ~%new%~
 END
+
+/*
+ * IK_FIXPACK_FIX_TOKEN (action function)
+ *   In the dialogues whose names match `files` (a regexp, e.g. ~^r#allis\.dlg$~), every state's,
+ *   reply's and journal entry's text holding `old` (a misspelled token such as <LORDLADY>, which the
+ *   game shows as written) gets `new` in its place, in the game's string table (STRING_SET, which
+ *   WeiDU undoes on uninstall). Only texts holding `old` change; the dialogues themselves don't.
+ */
+DEFINE_ACTION_FUNCTION IK_FIXPACK_FIX_TOKEN
+  STR_VAR files = ~~ old = ~~ new = ~~
+BEGIN
+  COPY_EXISTING_REGEXP GLOB ~%files%~ ~override~
+    READ_LONG 0x08 ik_states
+    READ_LONG 0x0c ik_state_at
+    READ_LONG 0x10 ik_replies
+    READ_LONG 0x14 ik_reply_at
+    // A state's text is its first word; a reply's text (flag bit 0) and journal entry (bit 4) are
+    // its second and third (IESDP DLG V1.0).
+    FOR (ik_i = 0; ik_i < ik_states + 2 * ik_replies; ++ik_i) BEGIN
+      PATCH_IF ik_i < ik_states BEGIN
+        SET ik_at = ik_state_at + 0x10 * ik_i
+        SET ik_has = 1
+      END ELSE BEGIN
+        SET ik_r = (ik_i - ik_states) / 2
+        READ_LONG (ik_reply_at + 0x20 * ik_r) ik_flags
+        SET ik_journal = (ik_i - ik_states) MODULO 2
+        SET ik_at = ik_reply_at + 0x20 * ik_r + 4 + 4 * ik_journal
+        SET ik_has = ik_journal ? ((ik_flags BAND 0x10) != 0) : ((ik_flags BAND 0x1) != 0)
+      END
+      PATCH_IF ik_has BEGIN
+        READ_SLONG ik_at ik_ref
+        PATCH_IF ik_ref >= 0 BEGIN
+          READ_STRREF ik_at ik_text
+          PATCH_IF (INDEX (CASE_SENSITIVE EXACT_MATCH ~%old%~ ~%ik_text%~)) >= 0 BEGIN
+            INNER_PATCH_SAVE ik_text ~%ik_text%~ BEGIN
+              REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~%old%~ ~%new%~
+            END
+            INNER_ACTION BEGIN
+              STRING_SET_EVALUATE ik_ref ~%ik_text%~
+            END
+          END
+        END
+      END
+    END
+  BUT_ONLY
+END
