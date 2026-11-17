@@ -289,3 +289,35 @@ COPY_EXISTING ~sdnpcj.dlg~ ~override~
     REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH ~GiveItemCreate("c2sw1h02",Protagonist,1,0,0)~ ~GiveItemCreate("c2sw1h02",Player1,1,0,0)~
   END
 BUT_ONLY
+
+// ---------------------------------------------------------------------------------------------
+// KIT.IDS as four mods leave it: Kido, Oversight and RPG-KP write BARBARIAN and WILDMAGE with the
+// value 0x0000 (the game's are 0x40000000 and 0x80000000), RPG-KP turns the line
+// 0x4000 MAGESCHOOL_GENERALIST into 0x0000 WILDMAGE, and ToB Aurora adds 0x0000 BARBARIAN and
+// WILDMAGE lines and a second 0x4000 TRUECLASS. Scripts then can't tell a barbarian or a wild mage
+// from a creature with no kit. Evidence: the Big World Fixpack's Setup-Kido, Setup-Oversight,
+// Setup-RPG-KP and setup-tobaurora tp2 patches (KIT.IDS parts); the game's own KIT.IDS.
+// Lines with a wrong value, and later copies of a line, are emptied; the first 0x4000 TRUECLASS
+// stays where it is (scripts read back with it); missing lines are added at the end. Nothing
+// changes when KIT.IDS is already right. (A line may end in CR: the game's file has CRLF.)
+BEGIN @310 DESIGNATED 310 LABEL ~ik_fixpack_kit_ids~
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~kit.ids~ @311
+COPY_EXISTING ~kit.ids~ ~override~
+  SET ik_barbarian = 0
+  SET ik_wildmage = 0
+  SET ik_trueclass = 0
+  REPLACE_EVALUATE CASE_INSENSITIVE ~^\(0x[0-9a-f]+\)[ %TAB%]+\(BARBARIAN\|WILDMAGE\|TRUECLASS\)[ %TAB%%MNL%]*$~ BEGIN
+    SET ik_value = %MATCH1%
+    SPRINT ik_line ~%MATCH0%~
+    PATCH_IF ~%MATCH2%~ STRING_EQUAL_CASE ~BARBARIAN~ BEGIN
+      PATCH_IF ik_value = 0x40000000 AND ik_barbarian = 0 BEGIN SET ik_barbarian = 1 END ELSE BEGIN SPRINT ik_line ~~ END
+    END ELSE PATCH_IF ~%MATCH2%~ STRING_EQUAL_CASE ~WILDMAGE~ BEGIN
+      PATCH_IF ik_value = 0x80000000 AND ik_wildmage = 0 BEGIN SET ik_wildmage = 1 END ELSE BEGIN SPRINT ik_line ~~ END
+    END ELSE PATCH_IF ik_value = 0x4000 BEGIN
+      PATCH_IF ik_trueclass = 0 BEGIN SET ik_trueclass = 1 END ELSE BEGIN SPRINT ik_line ~~ END
+    END
+  END ~%ik_line%~
+BUT_ONLY
+APPEND ~kit.ids~ ~0x4000 MAGESCHOOL_GENERALIST~ UNLESS ~MAGESCHOOL_GENERALIST~
+APPEND ~kit.ids~ ~0x40000000 BARBARIAN~ UNLESS ~^0x40000000[ %TAB%]+BARBARIAN~
+APPEND ~kit.ids~ ~0x80000000 WILDMAGE~ UNLESS ~^0x80000000[ %TAB%]+WILDMAGE~
