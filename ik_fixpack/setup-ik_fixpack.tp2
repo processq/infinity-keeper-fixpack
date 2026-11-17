@@ -366,11 +366,6 @@ BEGIN @420 DESIGNATED 420 LABEL ~ik_fixpack_ktweaks_eet~
 LAF IK_FIXPACK_REPLACE INT_VAR size = 1468
   STR_VAR source = ~ktweaks/setup-ktweaks.tp2~ target = ~setup-ktweaks.tp2~ edits = ~ik_fixpack/fixes/ktweaks/edits.tpp~ END
 
-// Rose NPC v0.03 open beta: requires GAME_IS ~bgt~. Evidence: rose/setup-rose.tp2 line 9.
-BEGIN @430 DESIGNATED 430 LABEL ~ik_fixpack_rose_eet~
-LAF IK_FIXPACK_REPLACE INT_VAR size = 449
-  STR_VAR source = ~rose/setup-rose.tp2~ target = ~setup-rose.tp2~ edits = ~ik_fixpack/fixes/rose/edits.tpp~ END
-
 // wonnimchunha's Portrait Mod v1: the BG2 portrait components require GAME_IS ~SOA~ or ~TOB~; each
 // copies one folder of bitmaps into override. Evidence: wonnimchunha/wonnimchunha.tp2 lines 56-73.
 BEGIN @440 DESIGNATED 440 LABEL ~ik_fixpack_wonnimchunha_ee~
