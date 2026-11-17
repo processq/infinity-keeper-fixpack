@@ -2,7 +2,7 @@
 // It never changes, copies or redistributes another author's files (README.md).
 BACKUP ~ik_fixpack/backup~
 AUTHOR ~Infinity Keeper (https://github.com/processq/infinity-keeper-fixpack/issues)~
-VERSION ~v0.1~
+VERSION ~v0.2-dev~
 README ~ik_fixpack/README.md~
 
 AUTO_TRA ~ik_fixpack/tra/%s~
@@ -198,6 +198,18 @@ ACTION_FOR_EACH ik_area IN ~ar3202~ ~bg3202~ BEGIN
     BUT_ONLY
   END
 END
+
+// ---------------------------------------------------------------------------------------------
+// Spellhold Gauntlet v1.16: AR1512's script checks for "ppbodhi", but the Bodhi the mod creates is
+// "ppbodhi4". Evidence: SPGaunt/AR1512.baf line 5 !AreaCheckObject("AR1512","ppbodhi"); the mod's
+// own SPGaunt/Z#1507.BAF lines 446 and 465 use "ppbodhi4".
+BEGIN @240 DESIGNATED 240 LABEL ~ik_fixpack_spgaunt_bodhi~
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~ar1512.bcs~ @241
+COPY_EXISTING ~ar1512.bcs~ ~override~
+  DECOMPILE_AND_PATCH BEGIN
+    REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~!AreaCheckObject("AR1512","ppbodhi")~ ~!AreaCheckObject("AR1512","ppbodhi4")~
+  END
+BUT_ONLY
 
 // ---------------------------------------------------------------------------------------------
 // Revised Battles v6.7: the sewers monk's script sets b#quiver in scope "LOCAL", which isn't a

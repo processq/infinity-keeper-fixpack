@@ -16,4 +16,5 @@ Each fix names where the bug was found and who found or fixed it first. The list
 | ik_fixpack_exnem_chest_items | Exnem's Vault v5 | Big World Fixpack: exnem AR2100.BAF, AR0803.BAF | Big World Fixpack contributors |
 | ik_fixpack_kido_whirl | Kido v7.0 | Big World Fixpack: Kido MWCySacr.baf | Big World Fixpack contributors |
 | ik_fixpack_kittomes_jamdak | Kit Tomes (commit 2da5257) | Big World Fixpack: kittomes mage2.baf | Big World Fixpack contributors |
+| ik_fixpack_spgaunt_bodhi | Spellhold Gauntlet v1.16 | Big World Fixpack: spgaunt AR1512.baf | Big World Fixpack contributors |
 | ik_fixpack_revisedbattles_local | Revised Battles v6.7 | Big World Fixpack: revisedbattles b#tar05.baf | Big World Fixpack contributors |
