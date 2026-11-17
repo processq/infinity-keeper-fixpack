@@ -321,3 +321,18 @@ BUT_ONLY
 APPEND ~kit.ids~ ~0x4000 MAGESCHOOL_GENERALIST~ UNLESS ~MAGESCHOOL_GENERALIST~
 APPEND ~kit.ids~ ~0x40000000 BARBARIAN~ UNLESS ~^0x40000000[ %TAB%]+BARBARIAN~
 APPEND ~kit.ids~ ~0x80000000 WILDMAGE~ UNLESS ~^0x80000000[ %TAB%]+WILDMAGE~
+
+// ---------------------------------------------------------------------------------------------
+// Scripts with an empty RESPONSE block (no action), an engine bug: Big World Project (BP) leaves
+// them in 274 of its scripts, and other mods do too. Each gets NoAction(), as the Big World
+// Fixpack's BP patches did one by one. BP's scripts extend the game's area scripts under the
+// game's names, so the scripts the mods put in override are all read; the game's own scripts in
+// its BIF files are left as they are. Compiled, an empty response is "RE", its weight, "RE"; with
+// NoAction() the weight is followed by the action (WeiDU v251's own output for the game).
+BEGIN @320 DESIGNATED 320 LABEL ~ik_fixpack_empty_responses~
+ACTION_BASH_FOR ~override~ ~^.+\.bcs$~ BEGIN
+  COPY ~%BASH_FOR_FILESPEC%~ ~override~
+    REPLACE_TEXTUALLY ~RE\(%MNL%?%LNL%\)\([0-9]+\)RE~
+      ~RE\1\2AC\10OB\10 0 0 0 0 0 0 0 0 0 0 0 ""OB\1OB\10 0 0 0 0 0 0 0 0 0 0 0 ""OB\1OB\10 0 0 0 0 0 0 0 0 0 0 0 ""OB\10 0 0 0 0"" "" AC\1RE~
+  BUT_ONLY
+END
