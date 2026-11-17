@@ -1,0 +1,4 @@
+@1001 = ~Infinity Keeper Fixpack: the mod's install script %source% isn't there. Install the mod's files first.~
+@1002 = ~Infinity Keeper Fixpack: %source% isn't the version this fix was written for (%size% bytes expected). Nothing was changed.~
+@1003 = ~Infinity Keeper Fixpack: a line this fix changes isn't in the mod's install script: it is another version. Nothing was installed.~
+@1004 = ~Infinity Keeper Fixpack: a line this fix changes appears more than once in the mod's install script. Nothing was installed.~

@@ -1,0 +1,18 @@
+// Infinity Keeper Fixpack: fixes for known bugs in other authors' mods, as a mod of our own.
+// It never changes, copies or redistributes another author's files (README.md).
+BACKUP ~ik_fixpack/backup~
+AUTHOR ~Infinity Keeper (https://github.com/processq/infinity-keeper-fixpack/issues)~
+VERSION ~v0.1~
+README ~ik_fixpack/README.md~
+
+AUTO_TRA ~ik_fixpack/tra/%s~
+ALWAYS
+  INCLUDE ~ik_fixpack/lib/ik_fixpack.tpa~
+END
+
+LANGUAGE ~English~ ~english~ ~ik_fixpack/tra/english/setup.tra~
+
+// Components: one per fix, each with a DESIGNATED number that never changes and a LABEL
+// "ik_fixpack_<mod>_<what>". An after-patch goes right after the component it fixes; a
+// replacement calls IK_FIXPACK_REPLACE, and Infinity Keeper then installs the mod from that copy.
+// The first fixes come from the verified start list (Infinity Keeper roadmap 6.2).

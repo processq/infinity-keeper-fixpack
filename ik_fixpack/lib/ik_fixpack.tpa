@@ -1,0 +1,63 @@
+// Infinity Keeper Fixpack: shared functions for its components.
+//
+// Two kinds of component (see README.md):
+//   after-patches   fix bad data a mod leaves in the game; installed right after it.
+//   replacements    make a working copy of a mod's own install script on the player's machine,
+//                   from the author's file plus our line edits, and install from that copy.
+//
+// This repository never holds another author's files or script text: only our edits.
+
+/*
+ * IK_FIXPACK_REPLACE (action function)
+ *   Copies the author's install script `source` (a path from the game folder) to `target`, after
+ *   checking it is the exact version our edits were written for, then applies `edits`, a .tpp
+ *   file of ours that calls IK_FIXPACK_EDIT once per change.
+ *
+ *   INT_VAR size     the author's file's size in bytes (0: not checked here). Infinity Keeper also
+ *                    checks the file's SHA-256 before it runs the result.
+ *   STR_VAR source   e.g. ~mymod/setup-mymod.tp2~
+ *           target   where the copy goes: in the game folder's top, under the author's file name,
+ *                    e.g. ~setup-mymod.tp2~. WeiDU v251 runs a tp2 only from the top or from a
+ *                    folder named like it (util.ml:963-972, case_exact_tp_file), matches installed
+ *                    scripts by file name only (tpstate.ml:209-213), so other mods' MOD_IS_INSTALLED
+ *                    and REQUIRE_COMPONENT checks still find the mod, and takes MOD_FOLDER for a
+ *                    top-level script from its BACKUP line (util.ml:932-946), the author's folder.
+ *                    A script whose BACKUP names another folder (or one that already sits at the
+ *                    top) goes in the mod's own folder under the other form of its name instead
+ *                    (setup-mymod.tp2 <-> mymod.tp2), which WeiDU matches the same way.
+ *           edits    e.g. ~ik_fixpack/fixes/mymod/edits.tpp~
+ */
+DEFINE_ACTION_FUNCTION IK_FIXPACK_REPLACE
+  INT_VAR size = 0
+  STR_VAR source = ~~ target = ~~ edits = ~~
+BEGIN
+  ACTION_IF NOT FILE_EXISTS ~%source%~ BEGIN
+    FAIL @1001
+  END
+  ACTION_IF size > 0 AND (SIZE_OF_FILE ~%source%~ != size) BEGIN
+    FAIL @1002
+  END
+  COPY ~%source%~ ~%target%~
+    PATCH_INCLUDE ~%edits%~
+END
+
+/*
+ * IK_FIXPACK_EDIT (patch function)
+ *   One of our changes to the copy: `old` must appear exactly once, and becomes `new`. Anything
+ *   else stops the component, so an edit never lands in the wrong place of another version.
+ */
+DEFINE_PATCH_FUNCTION IK_FIXPACK_EDIT
+  STR_VAR old = ~~ new = ~~
+BEGIN
+  SET first = INDEX_BUFFER (CASE_SENSITIVE EXACT_MATCH ~%old%~)
+  PATCH_IF first < 0 BEGIN
+    PATCH_FAIL @1003
+  END
+  PATCH_IF (INDEX_BUFFER (CASE_SENSITIVE EXACT_MATCH ~%old%~ (first + 1))) >= 0 BEGIN
+    PATCH_FAIL @1004
+  END
+  SET old_length = STRING_LENGTH ~%old%~
+  DELETE_BYTES first old_length
+  INSERT_BYTES first (STRING_LENGTH ~%new%~)
+  WRITE_ASCIIE first ~%new%~
+END
