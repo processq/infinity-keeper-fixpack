@@ -2,7 +2,7 @@
 // It never changes, copies or redistributes another author's files (README.md).
 BACKUP ~ik_fixpack/backup~
 AUTHOR ~Infinity Keeper (https://github.com/processq/infinity-keeper-fixpack/issues)~
-VERSION ~v0.1~
+VERSION ~v0.1.1~
 README ~ik_fixpack/README.md~
 
 AUTO_TRA ~ik_fixpack/tra/%s~
