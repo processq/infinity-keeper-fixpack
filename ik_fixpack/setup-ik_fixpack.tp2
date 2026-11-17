@@ -16,3 +16,137 @@ LANGUAGE ~English~ ~english~ ~ik_fixpack/tra/english/setup.tra~
 // "ik_fixpack_<mod>_<what>". An after-patch goes right after the component it fixes; a
 // replacement calls IK_FIXPACK_REPLACE, and Infinity Keeper then installs the mod from that copy.
 // The first fixes come from the verified start list (Infinity Keeper roadmap 6.2).
+
+// ---------------------------------------------------------------------------------------------
+// Dark Tidings v3.2: the Veil of Choking Darkness gives +30% acid resistance its description
+// doesn't mention.
+// Evidence: Tidings/itm/AC#DTSDC.itm equipped effects op 28, 29, 30 and 27, each parameter 1 = 30,
+// timing 2; Tidings/language/english/items_ee.tra lines 20-22 list electricity, cold and fire
+// resistance +30%, no acid. Source: Dark Tidings issue #7 ("Veil of Choking Darkness gives 30% acid
+// resistance, but the item says it shouldn't").
+BEGIN @100 DESIGNATED 100 LABEL ~ik_fixpack_tidings_veil_acid~
+REQUIRE_PREDICATE MOD_IS_INSTALLED ~setup-tidings.tp2~ ~0~ @101
+ACTION_IF FILE_EXISTS_IN_GAME ~ac#dtsdc.itm~ BEGIN
+  COPY_EXISTING ~ac#dtsdc.itm~ ~override~
+    LPF DELETE_EFFECT INT_VAR check_globals = 1 check_headers = 0 match_opcode = 27 match_parameter1 = 30 match_timing = 2 END
+  BUT_ONLY
+END
+
+// ---------------------------------------------------------------------------------------------
+// Unfinished Business v28, The Kidnapping of Boo: when Boo comes back, Minsc's portrait is set to
+// the old pictures, replacing the Enhanced Edition ones.
+// Evidence: ub/minsc/items/wwboo.spl effects op 107 parameter 2 = 1 (large) NMINSCM and
+// parameter 2 = 0 (small) NMINSCS; the EE games' own Minsc creatures (MINSC7-MINSC14.CRE) use
+// NMINSCL large and NMINSCM small. Source: Unfinished Business issue #26 ("the mod swapped out his
+// ee high res portrait with a low res one"), with AngelGryph's explanation there.
+BEGIN @110 DESIGNATED 110 LABEL ~ik_fixpack_ub_boo_portrait~
+REQUIRE_PREDICATE MOD_IS_INSTALLED ~setup-ub.tp2~ ~0~ @111
+ACTION_IF FILE_EXISTS_IN_GAME ~wwboo.spl~ AND FILE_EXISTS_IN_GAME ~nminscl.bmp~ BEGIN
+  COPY_EXISTING ~wwboo.spl~ ~override~
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 107 match_parameter2 = 1
+      STR_VAR match_resource = ~NMINSCM~ resource = ~NMINSCL~ END
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 107 match_parameter2 = 0
+      STR_VAR match_resource = ~NMINSCS~ resource = ~NMINSCM~ END
+  BUT_ONLY
+END
+
+// ---------------------------------------------------------------------------------------------
+// Check the Bodies v3.0: the game hangs when Farrahd's messenger adds the banquet invitation to the
+// journal, because the journal text isn't valid UTF-8 (English only: the mod converts its other
+// languages for the Enhanced Editions, not English).
+// Evidence: CtB/Language/English/CBSFMESS.TRA line 4 has byte 0xE9 in "debutante" (Windows-1252);
+// CtB/dialogs/translate/CBSFMESS.D line 16 AddJournalEntry(@4,INFO); setup-ctb.tp2 line 56 runs
+// HANDLE_CHARSETS only when the language isn't English. Source: Check the Bodies issues #9 ("there's
+// some strange symbol in text in journal entry that makes game crash") and #16 ("this bug is still
+// present in v3.0. After speaking with the messenger the game hangs").
+// Other English texts of the mod have the same kind of byte ("Faerun" with u-circumflex); only this
+// one is reported to hang the game, and only this one is fixed here.
+BEGIN @120 DESIGNATED 120 LABEL ~ik_fixpack_ctb_journal_text~
+REQUIRE_PREDICATE MOD_IS_INSTALLED ~setup-ctb.tp2~ ~0~ @121
+ACTION_IF FILE_EXISTS_IN_GAME ~cbsfmess.dlg~ BEGIN
+  OUTER_SET ik_journal = 0 - 1
+  COPY_EXISTING ~cbsfmess.dlg~ ~override~
+    REPLACE_EVALUATE CASE_INSENSITIVE ~AddJournalEntry(\([0-9]+\),INFO)~ BEGIN
+      SET ik_journal = MATCH1
+    END ~AddJournalEntry(%MATCH1%,INFO)~
+  BUT_ONLY
+  ACTION_IF ik_journal >= 0 BEGIN
+    ACTION_GET_STRREF ik_journal ik_text
+    LAF IK_FIXPACK_TO_UTF8 STR_VAR text = EVAL ~%ik_text%~ RET ik_text = text ik_changed = changed END
+    ACTION_IF ik_changed BEGIN
+      STRING_SET_EVALUATE ik_journal ~%ik_text%~
+    END
+  END
+END
+
+// ---------------------------------------------------------------------------------------------
+// Thalantyr Item Upgrade v4.5.1: the Sword of the Murderer's Held icon doesn't follow its
+// paralysis: a character immune to hold can get the icon, and a held one can lose it on a save.
+// Evidence: thalan/itm/thsw1h01.itm ability effects "op 109 resist 1 save 0" and "op 142
+// parameter 2 = 13 resist 3 save 1" (itm_bg1 the same). Source: Thalantyr Item Upgrade issue #19
+// ("Properties should be the same as the Paralyze effect which are correct").
+BEGIN @130 DESIGNATED 130 LABEL ~ik_fixpack_thalan_held_icon~
+REQUIRE_PREDICATE MOD_IS_INSTALLED ~thalan.tp2~ ~0~ @131
+ACTION_IF FILE_EXISTS_IN_GAME ~thsw1h01.itm~ BEGIN
+  COPY_EXISTING ~thsw1h01.itm~ ~override~
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 142 match_parameter2 = 13
+      resist_dispel = 1 savingthrow = 0 END
+  BUT_ONLY
+END
+
+// ---------------------------------------------------------------------------------------------
+// Finch NPC v6.0: on the Enhanced Editions Finch can't identify items with her glasses (the
+// Scroll choice is greyed out): the glasses aren't listed as an identifying item.
+// Evidence: FinchNPC/FinchNPC.TP2 lines 334-341 make override/sumisc3p.itm from misc3p.itm;
+// nothing in the archive adds it to itemspec.2da, where the EE games list MISC3P. Source: Finch NPC
+// issue #1, with AngelGryph's fix (2021-07-30): APPEND "itemspec.2da" "SUMISC3P 1" UNLESS "SUMISC3P".
+BEGIN @140 DESIGNATED 140 LABEL ~ik_fixpack_finchnpc_identify~
+REQUIRE_PREDICATE MOD_IS_INSTALLED ~finchnpc.tp2~ ~0~ @141
+ACTION_IF FILE_EXISTS_IN_GAME ~sumisc3p.itm~ AND FILE_EXISTS_IN_GAME ~itemspec.2da~ BEGIN
+  APPEND ~itemspec.2da~ ~SUMISC3P  1~ UNLESS ~SUMISC3P~
+END
+
+// ---------------------------------------------------------------------------------------------
+// Thrown Hammers v6.1.2: on the Enhanced Editions the Throwing Axe +1, Throwing Dagger +1,
+// Throwing Hammer and Throwing Hammer +1 don't add the thrower's Strength bonus to damage.
+// Evidence: hammers/items/t-ax1h01, t-dagg03, t-hamm03, t-hamm04.itm: the thrown ability (type 2)
+// has flags 0x1, 0x0, 0x1, 0x1, without 0x4 ("Damage strength bonus", IESDP ITM V1 extended header
+// 0x26); the EE games' own throwing axe and dagger (AX1H04, DAGG05) set 0x4. Source: Thrown Hammers
+// issue #6 ("None of these weapons are using the EE: Damage strength bonus (2) flag").
+BEGIN @150 DESIGNATED 150 LABEL ~ik_fixpack_hammers_strength~
+REQUIRE_PREDICATE (MOD_IS_INSTALLED ~setup-hammers.tp2~ ~25~ OR MOD_IS_INSTALLED ~setup-hammers.tp2~ ~35~) @151
+ACTION_FOR_EACH ik_item IN ~t-ax1h01~ ~t-dagg03~ ~t-hamm03~ ~t-hamm04~ BEGIN
+  ACTION_IF FILE_EXISTS_IN_GAME ~%ik_item%.itm~ BEGIN
+    COPY_EXISTING ~%ik_item%.itm~ ~override~
+      READ_LONG 0x64 ik_abilities
+      READ_SHORT 0x68 ik_count
+      FOR (ik_i = 0; ik_i < ik_count; ik_i += 1) BEGIN
+        READ_BYTE (ik_abilities + ik_i * 0x38) ik_type
+        PATCH_IF ik_type = 2 BEGIN
+          READ_LONG (ik_abilities + ik_i * 0x38 + 0x26) ik_flags
+          WRITE_LONG (ik_abilities + ik_i * 0x38 + 0x26) (ik_flags BOR 0x4)
+        END
+      END
+    BUT_ONLY
+  END
+END
+
+// ---------------------------------------------------------------------------------------------
+// Candlekeep Revisited (commit 97bb6d3): on EET, the mod's Imoen gets the death variable IMOEN
+// instead of IMOEN2, so the wrong (level 1) Imoen can come back and her later content can break.
+// Evidence: candlekeep_revisited/lib/main.tpa lines 127-134 (COPY_EXISTING imoen1.cre to
+// override/imoen.cre, WRITE_ASCII DEATHVAR ~IMOEN~); candlekeep_revisited.tp2 lines 22-25 set
+// bg1_imoen to imoen2 on EET but this copy doesn't use it. Source: Candlekeep Revisited issue #12
+// ("in EET, her DeathVar needs to be "imoen2"").
+// Install-tested on EET before release (one report only).
+BEGIN @160 DESIGNATED 160 LABEL ~ik_fixpack_candlekeep_revisited_deathvar~
+REQUIRE_PREDICATE MOD_IS_INSTALLED ~candlekeep_revisited.tp2~ ~0~ @161
+REQUIRE_PREDICATE GAME_IS ~eet~ @162
+ACTION_IF FILE_EXISTS_IN_GAME ~imoen.cre~ BEGIN
+  COPY_EXISTING ~imoen.cre~ ~override~
+    READ_ASCII DEATHVAR ik_deathvar (32) NULL
+    PATCH_IF ~%ik_deathvar%~ STRING_EQUAL_CASE ~IMOEN~ BEGIN
+      WRITE_ASCII DEATHVAR ~IMOEN2~ #32
+    END
+  BUT_ONLY
+END
