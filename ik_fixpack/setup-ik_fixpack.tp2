@@ -139,3 +139,108 @@ ACTION_IF FILE_EXISTS_IN_GAME ~imoen.cre~ BEGIN
     END
   BUT_ONLY
 END
+
+// =============================================================================================
+// From the Big World Fixpack's patches (GPL-2.0), read against each mod's current version: the
+// findings are theirs (CREDITS.md), the fixes our own. Each changes a script or file the mod
+// installed, only where the mod's exact wrong text is still there.
+
+// ---------------------------------------------------------------------------------------------
+// BoM Item Pack 2.1: Taluntain's greeting plays a sound that doesn't exist (DEMOGO1, letter O; the
+// game's file is DEMOG01, zero), and O!BOM013's sound effect names _CAS_M02 (the game's is CAS_M02).
+// Evidence: Setup-BoM/baf/O!TalF.baf line 7 PlaySound("DEMOGO1"); Setup-BoM/itm/O!BOM013.ITM
+// ability effect op 174 resource _CAS_M02; the EE games have DEMOG01.WAV and CAS_M02.WAV.
+BEGIN @200 DESIGNATED 200 LABEL ~ik_fixpack_bom_sounds~
+REQUIRE_PREDICATE (FILE_EXISTS_IN_GAME ~o!talf.bcs~ OR FILE_EXISTS_IN_GAME ~o!bom013.itm~) @201
+ACTION_IF FILE_EXISTS_IN_GAME ~o!talf.bcs~ BEGIN
+  COPY_EXISTING ~o!talf.bcs~ ~override~
+    DECOMPILE_AND_PATCH BEGIN
+      REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~PlaySound("DEMOGO1")~ ~PlaySound("DEMOG01")~
+    END
+  BUT_ONLY
+END
+ACTION_IF FILE_EXISTS_IN_GAME ~o!bom013.itm~ BEGIN
+  COPY_EXISTING ~o!bom013.itm~ ~override~
+    LPF ALTER_EFFECT INT_VAR check_globals = 0 check_headers = 1 match_opcode = 174
+      STR_VAR match_resource = ~_CAS_M02~ resource = ~CAS_M02~ END
+  BUT_ONLY
+END
+
+// ---------------------------------------------------------------------------------------------
+// Exnem's Vault v5: two treasure items the mod adds are misnamed, so they never appear: AMULX003 in
+// Chest 17 of AR2100 (the item is AMULX03) and XSWS003 in Chest 1 of AR0803 (the item is XSWD003).
+// Evidence: Exnem/BAF/AR2100.BAF line 14 and Exnem/BAF/AR0803.BAF line 10 (EXTEND_BOTTOM, tp2 lines
+// 2572 and 2540); the mod's own items are Exnem/ITEM/AMULX03.ITM and XSWD003.ITM.
+BEGIN @210 DESIGNATED 210 LABEL ~ik_fixpack_exnem_chest_items~
+REQUIRE_PREDICATE (FILE_EXISTS_IN_GAME ~amulx03.itm~ OR FILE_EXISTS_IN_GAME ~xswd003.itm~) @211
+ACTION_IF FILE_EXISTS_IN_GAME ~ar2100.bcs~ BEGIN
+  COPY_EXISTING ~ar2100.bcs~ ~override~
+    DECOMPILE_AND_PATCH BEGIN
+      REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~CreateItem("AMULX003",~ ~CreateItem("AMULX03",~
+    END
+  BUT_ONLY
+END
+ACTION_IF FILE_EXISTS_IN_GAME ~ar0803.bcs~ BEGIN
+  COPY_EXISTING ~ar0803.bcs~ ~override~
+    DECOMPILE_AND_PATCH BEGIN
+      REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~CreateItem("XSWS003",~ ~CreateItem("XSWD003",~
+    END
+  BUT_ONLY
+END
+
+// ---------------------------------------------------------------------------------------------
+// Kido v7.0: the cyclops sacrifice plays a visual effect that doesn't exist (SPWIRHL; the game's
+// is SPWHIRL). Evidence: Kido/scripts/MWCySacr.baf line 24 (COMPILE, Setup-Kido.tp2 line 214);
+// the EE games have SPWHIRL.VVC.
+BEGIN @220 DESIGNATED 220 LABEL ~ik_fixpack_kido_whirl~
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~mwcysacr.bcs~ @221
+COPY_EXISTING ~mwcysacr.bcs~ ~override~
+  DECOMPILE_AND_PATCH BEGIN
+    REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~"SPWIRHL"~ ~"SPWHIRL"~
+  END
+BUT_ONLY
+
+// ---------------------------------------------------------------------------------------------
+// Kit Tomes (commit 2da5257), component 6: in Thalantyr's house the script names Jamdak by his
+// display name, so the action finds nobody: his script name is S9JAMDAK.
+// Evidence: kittomes/baf/mage2.baf ActionOverride("Jamdak",SetNumTimesTalkedTo(2)) (EXTEND_BOTTOM
+// of AR3202.BCS on the EE games, setup-kittomes.tp2 line 782, lib/tbgcom_bgee_vars.tpa line 296);
+// kittomes' S9JAMDAK.CRE script name (offset 0x280) is S9JAMDAK.
+BEGIN @230 DESIGNATED 230 LABEL ~ik_fixpack_kittomes_jamdak~
+REQUIRE_PREDICATE MOD_IS_INSTALLED ~setup-kittomes.tp2~ ~6~ @231
+ACTION_FOR_EACH ik_area IN ~ar3202~ ~bg3202~ BEGIN
+  ACTION_IF FILE_EXISTS_IN_GAME ~%ik_area%.bcs~ BEGIN
+    COPY_EXISTING ~%ik_area%.bcs~ ~override~
+      DECOMPILE_AND_PATCH BEGIN
+        REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~ActionOverride("Jamdak",SetNumTimesTalkedTo(2))~
+          ~ActionOverride("S9JAMDAK",SetNumTimesTalkedTo(2))~
+      END
+    BUT_ONLY
+  END
+END
+
+// ---------------------------------------------------------------------------------------------
+// Spellhold Gauntlet v1.16: AR1512's script checks for "ppbodhi", but the Bodhi the mod creates is
+// "ppbodhi4". Evidence: SPGaunt/AR1512.baf line 5 !AreaCheckObject("AR1512","ppbodhi"); the mod's
+// own SPGaunt/Z#1507.BAF lines 446 and 465 use "ppbodhi4".
+BEGIN @240 DESIGNATED 240 LABEL ~ik_fixpack_spgaunt_bodhi~
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~ar1512.bcs~ @241
+COPY_EXISTING ~ar1512.bcs~ ~override~
+  DECOMPILE_AND_PATCH BEGIN
+    REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~!AreaCheckObject("AR1512","ppbodhi")~ ~!AreaCheckObject("AR1512","ppbodhi4")~
+  END
+BUT_ONLY
+
+// ---------------------------------------------------------------------------------------------
+// Revised Battles v6.7: the sewers monk's script sets b#quiver in scope "LOCAL", which isn't a
+// scope (LOCALS is). Evidence: RevisedBattles/sewers/baf/b#tar05.baf line 43
+// SetGlobal("b#quiver","LOCAL",1) (COMPILE, Setup-RevisedBattles.tp2 line 2139). The variable is
+// read nowhere, so this only stops the engine writing a stray variable. Compiled, the 5-letter
+// scope takes the name's first letter: WeiDU reads it back as SetGlobal("#quiver","LOCALb",1).
+BEGIN @250 DESIGNATED 250 LABEL ~ik_fixpack_revisedbattles_local~
+REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~b#tar05.bcs~ @251
+COPY_EXISTING ~b#tar05.bcs~ ~override~
+  DECOMPILE_AND_PATCH BEGIN
+    REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~SetGlobal("#quiver","LOCALb",1)~ ~SetGlobal("b#quiver","LOCALS",1)~
+  END
+BUT_ONLY
