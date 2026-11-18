@@ -20,3 +20,5 @@ Each fix names where the bug was found and who found or fixed it first. The list
 | ik_fixpack_revisedbattles_local | Revised Battles v6.7 | Big World Fixpack: revisedbattles b#tar05.baf | Big World Fixpack contributors |
 | ik_fixpack_atweaks_stats_ids | aTweaks v4.53 | Infinity Keeper's Diagnose on a test build (946 scripts that no longer recompile), traced to atweaks/lib/ds/ds.tph | Infinity Keeper test |
 | ik_fixpack_bonehill_quest | Secret of Bone Hill (EET) v34 and git-7644535 | Big World Fixpack: bonehillv275 area scripts and dialogues, checked again in BonehillEET; the BHARRNESS spelling found by Infinity Keeper | Big World Fixpack contributors |
+| ik_fixpack_bp_spawns | Big Picture v181-b4611 | Big World Fixpack: bp bAR1900.BAF, bAR1300.baf | Big World Fixpack contributors |
+| ik_fixpack_tlk_girlboy | Big Picture v181-b4611 (Italian) and any mod with the token | Big World Fixpack: bp IRENIC2.tra | Big World Fixpack contributors |

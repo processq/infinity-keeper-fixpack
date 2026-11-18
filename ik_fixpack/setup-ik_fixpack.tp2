@@ -423,3 +423,43 @@ ACTION_FOR_EACH ik_area IN ~bh0100~ ~bh1000~ ~bh1001~ ~bh1002~ ~bh1003~ ~bh1004~
   END
 END
 COMPILE ~ik_fixpack/fixes/bonehill/bonehill.d~
+
+// ---------------------------------------------------------------------------------------------
+// Big Picture v181-b4611: two area spawns that never happen.
+// - The brown dragon in AR1900 is spawned as KRDRGBRN, a creature the mod doesn't have: its
+//   creature is BPDRGBRN (bp/BrownDragon/cre/bpdrgbrn.cre; KRDRGBRN is only its script).
+//   Evidence: bp/BrownDragon/baf/bAR1900.BAF line 7, EXTEND_BOTTOM of AR1900.BCS
+//   (bp/lib/bp_encounters.tph line 1214).
+// - AR1300's extra trolls wait for OnCreation(), which an area script sees only when the area is
+//   first made; the block already sets its own BP_MoreStooges, so without it it still runs once.
+//   Evidence: bp/SNIP/bAR1300.baf line 2, EXTEND_BOTTOM of AR1300.BCS (bp/lib/bp_encounter_scripts.tph
+//   line 667).
+// Found first by the Big World Fixpack (bp); checked again in Big Picture v181, our own edits.
+BEGIN @520 DESIGNATED 520 LABEL ~ik_fixpack_bp_spawns~
+REQUIRE_PREDICATE (FILE_EXISTS_IN_GAME ~bpdrgbrn.cre~ OR RESOURCE_CONTAINS ~ar1300.bcs~ ~BP_MoreStooges~) @521
+ACTION_IF FILE_EXISTS_IN_GAME ~ar1900.bcs~ BEGIN
+  COPY_EXISTING ~ar1900.bcs~ ~override~
+    DECOMPILE_AND_PATCH BEGIN
+      REPLACE_TEXTUALLY CASE_INSENSITIVE EXACT_MATCH ~CreateCreatureDoor("KRDRGBRN",~ ~CreateCreatureDoor("BPDRGBRN",~
+    END
+  BUT_ONLY
+END
+ACTION_IF FILE_EXISTS_IN_GAME ~ar1300.bcs~ BEGIN
+  COPY_EXISTING ~ar1300.bcs~ ~override~
+    DECOMPILE_AND_PATCH BEGIN
+      REPLACE_TEXTUALLY CASE_INSENSITIVE ~OnCreation()[ %TAB%%LNL%%MNL%]+\(Global("BP_MoreStooges","AR1300",0)\)~ ~\1~
+    END
+  BUT_ONLY
+END
+
+// ---------------------------------------------------------------------------------------------
+// Text: <PRO_BOYGIRL> isn't a token the games know (theirs is <PRO_GIRLBOY>), so the line shows
+// it as written. Big Picture v181's Italian IRENIC2.tra line 21 (@20) has it in both forms of the
+// line; any other mod's string with it is fixed too. ALTER_TLK patches the strings already in
+// dialog.tlk (WeiDU v208), so install it after the mods it fixes. Not stated in WeiDU's readme:
+// whether it reaches dialogF.tlk (the female form): the game check says.
+// Found first by the Big World Fixpack (bp IRENIC2.tra); our own edit.
+BEGIN @530 DESIGNATED 530 LABEL ~ik_fixpack_tlk_girlboy~
+ALTER_TLK BEGIN
+  REPLACE_TEXTUALLY EXACT_MATCH ~<PRO_BOYGIRL>~ ~<PRO_GIRLBOY>~
+END
