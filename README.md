@@ -60,6 +60,19 @@ For plain WeiDU or another installer: install each fix you want at the place its
 | 590 `ik_fixpack_eseries_ds_stats` | eSeries v3 (eseries/setup-eseries.tp2) | before | Right before eSeries' first component: edits eseries/ds/ds.tph. | BG2:EE, EET |
 | 600 `ik_fixpack_item_rev_ds_stats` | Item Revisions v4 b10 (item_rev/setup-item_rev.tp2) | before | Right before Item Revisions' shield bash component: edits item_rev/ds/ds.tph. | BG2:EE, EET |
 | 610 `ik_fixpack_spell_rev_ds_stats` | Spell Revisions v4.21 (spell_rev/setup-spell_rev.tp2) | before | Right before Spell Revisions' first component: edits spell_rev/lib/ds.tph. | BG2:EE, EET |
+| 620 `ik_fixpack_bankmod_script` | BankMod git-69e6372 (BankMod/BankMod.tp2) | replace | Install it before BankMod. It writes BankMod.tp2, a corrected copy of BankMod/BankMod.tp2; then install BankMod from that copy. | EET, BGT |
+| 630 `ik_fixpack_bg2eear_script` | BG2 Enhanced Edition Armor Pack v1.01 (SETUP-BG2eeAR.tp2) | replace | Install it before the mod. It writes BG2eeAR/BG2eeAR.tp2, a corrected copy; then install the mod from that copy. | BG2:EE, EET |
+| 640 `ik_fixpack_blackhearts_bg2_patch_tra` | Blackhearts BG2 Patch v1.0 (Blackhearts_BG2 Patch/Blackhearts_BG2 Patch.tp2) | replace | Install it before the mod. It writes a corrected copy at the game folder's top; then install the mod from that copy. | BG2:EE, EET |
+| 650 `ik_fixpack_brage_quotes` | Brage's Penance v1 (#!Brage/dialogue.d) | in place | Before Brage's Penance, with the mod's files in place: fixes two misplaced quotes in the mod's dialogue file. | BG:EE |
+| 660 `ik_fixpack_stormbringer_end` | Elric's Stormbringer v1.2 (7C#Stormbringer/setup-7C#Stormbringer.tp2) | replace | Install it before the mod. It writes a corrected copy at the game folder's top; then install the mod from that copy. | BG:EE, SoD, BG2:EE |
+| 670 `ik_fixpack_ik_pyro_folder` | Infinity Kits 0.9b (IK/Setup-IK.tp2) | replace | Install it before the mod. It writes Setup-IK.tp2, a corrected copy; then install the mod from that copy. | BG2, BG2:EE, EET |
+| 680 `ik_fixpack_ulbs_zaaman_ini` | Ulbs Animation Pack (UlbsAnimationPack/lib/ELEPRI.tpa) | in place | Before the mod, with its files in place: fixes the path of Zaaman.ini in the mod's library file. | BG:EE, BG2:EE, EET |
+| 700 `ik_fixpack_kitanya_extra_end` | Kitanya git-d342de8 (kitanya/kitanya.tp2) | replace | Install it before the mod. It writes kitanya.tp2, a corrected copy; then install the mod from that copy. | BG2, BGT, BG2:EE, EET |
+| 710 `ik_fixpack_late_fixes_copy_target` | Late Fixes git-c293d6f (late_fixes.tp2) | replace | Install it before the mod. It writes late_fixes/setup-late_fixes.tp2, a corrected copy; then install the mod from that copy. | BG2:EE, EET |
+| 720 `ik_fixpack_leshy_kit_paths` | Leshy Kit (Leshy/Setup-Leszy.TP2) | replace | Install it before the mod. It writes Setup-Leszy.TP2, a corrected copy; then install the mod from that copy. | BG2:EE, EET |
+| 730 `ik_fixpack_multistronghold_script_path` | Multi-Stronghold v0 (multistronghold/setup-multistronghold.tp2) | replace | Install it before the mod. It writes multistronghold/multistronghold.tp2, a corrected copy; then install the mod from that copy. | BG2, BGT, BG2:EE, EET |
+| 760 `ik_fixpack_sorc_tweak_paths` | Sorcery tweak git-6c54023 (sorc_tweak/sorc_tweak.tp2) | replace | Install it before the mod. It writes sorc_tweak/setup-sorc_tweak.tp2, a corrected copy; then install the mod from that copy. | BG:EE, SoD, BG2:EE, EET, IWD:EE |
+| 770 `ik_fixpack_valen_tra_path` | Valen: Hellmouse v0.0.1 (valen/Setup-Valen.tp2) | replace | Install it before the mod. It writes valen/valen.tp2, a corrected copy; then install the mod from that copy. | BG2:EE, EET |
 
 ## Licence
 

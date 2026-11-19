@@ -517,3 +517,99 @@ BEGIN @610 DESIGNATED 610 LABEL ~ik_fixpack_spell_rev_ds_stats~
 REQUIRE_PREDICATE FILE_EXISTS ~spell_rev/lib/ds.tph~ @1006
 LAF IK_FIXPACK_REPLACE INT_VAR size = 70986
   STR_VAR source = ~spell_rev/lib/ds.tph~ target = ~spell_rev/lib/ds.tph~ edits = ~ik_fixpack/fixes/spell_rev_ds_stats/edits.tpp~ END
+
+// =============================================================================================
+// Replacement install scripts and in-place fixes for mods whose own files are broken (the Infinity Keeper catalog's
+// fix_notes, each read in the placed files before the edit was written). Install each before the mod it fixes.
+
+// BankMod git-69e6372 (a replacement install script): the INCLUDE block before LANGUAGE stands outside any component
+// (WeiDU accepts no actions there), and EXTEND_TOP has EVALUATE_BUFFER before the file names. BankMod.tp2 in the game
+// folder's top is the corrected copy; Infinity Keeper installs the mod from it. Evidence: BankMod/BankMod.tp2 lines 4-9, 45.
+BEGIN @620 DESIGNATED 620 LABEL ~ik_fixpack_bankmod_script~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 1134
+  STR_VAR source = ~BankMod/BankMod.tp2~ target = ~BankMod.tp2~ edits = ~ik_fixpack/fixes/bankmod/edits.tpp~ END
+
+// BG2 Enhanced Edition Armor Pack v1.01 (TeamBG; the catalog's bg2eear and teambg_bg2ee_armor_pack, the same script):
+// the script copies cmtb2ees1.sto and cmtb2ees1.cre, which the archive names cmtb2es1. The script sits in the game
+// folder's top, so its copy goes in the mod's own folder under the other form of its name. Evidence: SETUP-BG2eeAR.tp2
+// lines 161 and 168; BG2eeAR/sto/cmtb2es1.STO, BG2eeAR/cre/cmtb2es1.CRE.
+BEGIN @630 DESIGNATED 630 LABEL ~ik_fixpack_bg2eear_script~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 3591
+  STR_VAR source = ~SETUP-BG2eeAR.tp2~ target = ~BG2eeAR/BG2eeAR.tp2~ edits = ~ik_fixpack/fixes/bg2eear/edits.tpp~ END
+
+// Blackhearts BG2 Patch v1.0: the dialogue is compiled with a translation file in a folder the archive does not have.
+// Evidence: Blackhearts_BG2 Patch/Blackhearts_BG2 Patch.tp2 line 15; tra/English/BHBG2script.tra.
+BEGIN @640 DESIGNATED 640 LABEL ~ik_fixpack_blackhearts_bg2_patch_tra~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 385
+  STR_VAR source = ~Blackhearts_BG2 Patch/Blackhearts_BG2 Patch.tp2~ target = ~Blackhearts_BG2 Patch.tp2~ edits = ~ik_fixpack/fixes/blackhearts_bg2_patch/edits.tpp~ END
+
+// Brage's Penance v1 (in place): two misplaced quotes in #!Brage/dialogue.d (lines 20 and 77) stop its dialogue compile.
+BEGIN @650 DESIGNATED 650 LABEL ~ik_fixpack_brage_quotes~
+REQUIRE_PREDICATE FILE_EXISTS ~#!Brage/dialogue.d~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 5224
+  STR_VAR source = ~#!Brage/dialogue.d~ target = ~#!Brage/dialogue.d~ edits = ~ik_fixpack/fixes/brage/edits.tpp~ END
+
+// Elric's Stormbringer v1.2: a PATCH_IF block in each of the two item copies is never closed (lines 13 and 34).
+// Evidence: 7C#Stormbringer/setup-7C#Stormbringer.tp2 lines 13-31 and 34-52.
+BEGIN @660 DESIGNATED 660 LABEL ~ik_fixpack_stormbringer_end~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 2241
+  STR_VAR source = ~7C#Stormbringer/setup-7C#Stormbringer.tp2~ target = ~setup-7C#Stormbringer.tp2~ edits = ~ik_fixpack/fixes/elrics_stormbringer/edits.tpp~ END
+
+// Infinity Kits 0.9b: Mystic Pyromaniac copies two 2DA files from IK/Pyro/2DA/, which the archive does not have
+// (IK/MysticPyromaniac/2DA/). Evidence: IK/Setup-IK.tp2 lines 107 and 109 against lines 16 and 18.
+BEGIN @670 DESIGNATED 670 LABEL ~ik_fixpack_ik_pyro_folder~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 30753
+  STR_VAR source = ~IK/Setup-IK.tp2~ target = ~Setup-IK.tp2~ edits = ~ik_fixpack/fixes/ik/edits.tpp~ END
+
+// Ulbs Animation Pack (in place): UlbsAnimationPack/lib/ELEPRI.tpa line 64 copies Zaaman.ini from another package's
+// folder (UlbsPatchEE/files/EPRI/inis/); the archive has it in UlbsAnimationPack/inis/.
+BEGIN @680 DESIGNATED 680 LABEL ~ik_fixpack_ulbs_zaaman_ini~
+REQUIRE_PREDICATE FILE_EXISTS ~UlbsAnimationPack/lib/ELEPRI.tpa~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 3826
+  STR_VAR source = ~UlbsAnimationPack/lib/ELEPRI.tpa~ target = ~UlbsAnimationPack/lib/ELEPRI.tpa~ edits = ~ik_fixpack/fixes/ulbs_animation_pack/edits.tpp~ END
+
+// ---------------------------------------------------------------------------------------------
+// Install scripts that are broken as the authors shipped them (replacements): each is a corrected copy of the mod's own
+// install script, made on the player's machine from the author's file plus our line edits; install it before the mod, and
+// Infinity Keeper then installs the mod from the copy. The mod's own files are never changed. Each was run on a fake game:
+// the copy parses (weidu --list-components) where the author's file does not, or finds the files it names.
+
+// Kitanya git-d342de8: kitanya/kitanya.tp2 has one END too many (line 75, after the OUTER_FOR that is already closed on
+// line 74), so WeiDU stops with a parse error.
+BEGIN @700 DESIGNATED 700 LABEL ~ik_fixpack_kitanya_extra_end~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 2985
+  STR_VAR source = ~kitanya/kitanya.tp2~ target = ~kitanya.tp2~ edits = ~ik_fixpack/fixes/kitanya/edits.tpp~ END
+
+// Late Fixes git-c293d6f: late_fixes.tp2 line 6 is a COPY with no destination, so WeiDU stops at the end of the file.
+// The script sits in the game folder's top, so its copy goes in the mod's own folder under the other form of its name.
+BEGIN @710 DESIGNATED 710 LABEL ~ik_fixpack_late_fixes_copy_target~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 158
+  STR_VAR source = ~late_fixes.tp2~ target = ~late_fixes/setup-late_fixes.tp2~ edits = ~ik_fixpack/fixes/late_fixes/edits.tpp~ END
+
+// Leshy Kit: Leshy/Setup-Leszy.TP2 names its files Leshy\X (lines 39-52) and Leszy\LESHY.2DA (line 15); they are in
+// Leshy/LESHY/. The script's own name (Leszy) is not its folder's (Leshy), so the copy goes in the game folder's top; its
+// BACKUP line names Leshy, which then is the mod's folder.
+BEGIN @720 DESIGNATED 720 LABEL ~ik_fixpack_leshy_kit_paths~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 2784
+  STR_VAR source = ~Leshy/Setup-Leszy.TP2~ target = ~Setup-Leszy.TP2~ edits = ~ik_fixpack/fixes/leshy_kit/edits.tpp~ END
+
+// Multi-Stronghold v0: setup-multistronghold.tp2 line 16 names multistronghold/bg2tweak//bg2tweak/%script%.baf; the scripts
+// are directly in multistronghold/bg2tweak/. Its BACKUP names another folder (stratagems_external), so the copy goes in the
+// mod's own folder under the other form of its name.
+BEGIN @730 DESIGNATED 730 LABEL ~ik_fixpack_multistronghold_script_path~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 4430
+  STR_VAR source = ~multistronghold/setup-multistronghold.tp2~ target = ~multistronghold/multistronghold.tp2~ edits = ~ik_fixpack/fixes/multistronghold/edits.tpp~ END
+
+// Sorcery tweak (sorc_tweak) git-6c54023: sorc_tweak/sorc_tweak.tp2 names its 2da files (lines 17 and 25) and its two
+// translation files (lines 6 and 10) without the data/ and sorc_tweak/ parts of their real paths. Its BACKUP names another
+// folder (weidu_external), so the copy goes in the mod's own folder under the other form of its name.
+BEGIN @760 DESIGNATED 760 LABEL ~ik_fixpack_sorc_tweak_paths~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 479
+  STR_VAR source = ~sorc_tweak/sorc_tweak.tp2~ target = ~sorc_tweak/setup-sorc_tweak.tp2~ edits = ~ik_fixpack/fixes/sorc_tweak/edits.tpp~ END
+
+// Valen (hellmouse) v0.0.1: valen/Setup-Valen.tp2 line 119 names valen/%s/valen.tra; the translations are in
+// valen/languages/%s/. The archive also has a Setup-Valen.tp2 at its top (a different version with the same line), which
+// stays as it is: this copy goes in the mod's own folder under the other form of its name.
+BEGIN @770 DESIGNATED 770 LABEL ~ik_fixpack_valen_tra_path~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 8550
+  STR_VAR source = ~valen/Setup-Valen.tp2~ target = ~valen/valen.tp2~ edits = ~ik_fixpack/fixes/valen_hellmouse/edits.tpp~ END

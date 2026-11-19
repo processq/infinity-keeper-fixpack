@@ -58,4 +58,17 @@
 @590 = ~eSeries v3: Detectable Spells without damaging STATS.IDS on WeiDU 251 (install before the mod)~
 @600 = ~Item Revisions v4 b10: Detectable Spells without damaging STATS.IDS on WeiDU 251 (install before the mod)~
 @610 = ~Spell Revisions v4.21: Detectable Spells without damaging STATS.IDS on WeiDU 251 (install before the mod)~
+@620 = ~BankMod git-69e6372: a corrected install script (the INCLUDE block outside a component, EXTEND_TOP's EVALUATE_BUFFER); install before BankMod~
+@630 = ~BG2 Enhanced Edition Armor Pack v1.01: a corrected install script (the store and creature file names cmtb2es1); install before the mod~
+@640 = ~Blackhearts BG2 Patch v1.0: a corrected install script (the translation file of its dialogue); install before the mod~
+@650 = ~Brage's Penance v1: two misplaced quotes in its dialogue.d (install after the mod's files are in place, before the mod)~
+@660 = ~Elric's Stormbringer v1.2: a corrected install script (two PATCH_IF blocks never closed); install before the mod~
+@670 = ~Infinity Kits 0.9b: a corrected install script (Mystic Pyromaniac's 2DA folder); install before the mod~
+@680 = ~Ulbs Animation Pack: the Zaaman.ini path in lib/ELEPRI.tpa (install before the mod)~
+@700 = ~Kitanya: install script without its extra END (so WeiDU can read it)~
+@710 = ~Late Fixes: install script with the missing COPY destination~
+@720 = ~Leshy Kit: install script with the right paths to the mod's files~
+@730 = ~Multi-Stronghold: install script with the right path of the cleric stronghold scripts~
+@760 = ~Sorcery tweak: install script with the right paths to the mod's files~
+@770 = ~Valen: install script with the right path of the dialogue translations~
 @1006 = ~Infinity Keeper Fixpack: install the mod this fixes first (its files must be in the game folder).~
