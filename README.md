@@ -52,6 +52,14 @@ For plain WeiDU or another installer: install each fix you want at the place its
 | 510 `ik_fixpack_bonehill_quest` | Secret of Bone Hill (EET) v34 to git-7644535 (BonehillEET/Setup-BonehillEET.tp2) | after | Right after Secret of Bone Hill (EET) component 0. | EET |
 | 520 `ik_fixpack_bp_spawns` | Big Picture v181-b4611 (bp/setup-bp.tp2) | after | Right after Big Picture components 1110, 1315 (after the last of them). | BG:EE, SoD, BG2:EE, EET |
 | 530 `ik_fixpack_tlk_girlboy` | Big Picture v181-b4611 (bp/setup-bp.tp2) | after | After every component of Big Picture (it patches strings already in dialog.tlk). | BG:EE, SoD, BG2:EE, EET |
+| 540 `ik_fixpack_sorcery_strings` | Sorcery (QDSpontaneous) git-deff6a2 (Sorcery/SetUp-Sorcery.tp2) | replace | Install it before Sorcery. It writes SetUp-Sorcery.tp2, a copy of Sorcery/SetUp-Sorcery.tp2 that also reads our two missing strings; then install Sorcery from that copy. | BG:EE, SoD, BG2:EE, EET, IWD:EE |
+| 550 `ik_fixpack_rr_ds_stats` | Rogue Rebalancing v4.92 (rr/setup-rr.tp2) | before | Right before Rogue Rebalancing's first component: edits rr/lib/ds/ds.tph. | BG2:EE, EET |
+| 560 `ik_fixpack_bp_ds_stats` | Big Picture v181-b4611 (bp/setup-bp.tp2) | before | Right before Big Picture's first component: edits BP/DS/ds.tph. | BG:EE, SoD, BG2:EE, EET |
+| 570 `ik_fixpack_bpseries_ds_stats` | BP Series v0.3121 (bpseries/setup-bpseries.tp2) | before | Right before BP Series' first component: edits bpseries/ds/ds.tph. | BG:EE, SoD, BG2:EE, EET |
+| 580 `ik_fixpack_c4gas_ds_stats` | Game Assistant Scripts v1.6 and git-62cc180 (c4GAS/c4GAS.tp2) | before | Right before the first component that loads Detectable Spells (buff.tpa): edits c4GAS/lib/ds/ds.tph. | BG2:EE, EET |
+| 590 `ik_fixpack_eseries_ds_stats` | eSeries v3 (eseries/setup-eseries.tp2) | before | Right before eSeries' first component: edits eseries/ds/ds.tph. | BG2:EE, EET |
+| 600 `ik_fixpack_item_rev_ds_stats` | Item Revisions v4 b10 (item_rev/setup-item_rev.tp2) | before | Right before Item Revisions' shield bash component: edits item_rev/ds/ds.tph. | BG2:EE, EET |
+| 610 `ik_fixpack_spell_rev_ds_stats` | Spell Revisions v4.21 (spell_rev/setup-spell_rev.tp2) | before | Right before Spell Revisions' first component: edits spell_rev/lib/ds.tph. | BG2:EE, EET |
 
 ## Licence
 
