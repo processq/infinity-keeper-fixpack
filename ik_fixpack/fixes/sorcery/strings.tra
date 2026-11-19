@@ -1,0 +1,4 @@
+// Infinity Keeper Fixpack: the two strings Sorcery's lib/qd_spontaneous.tpa asks for at lines 341 and
+// 350 and its setup.tra lacks. The wording is the mod's own, from @1 and @2 of its setup.tra.
+@10000001 = ~Remaining Level %lvl% Mage Spells: %slots%~
+@10000002 = ~Remaining Level %lvl% Priest Spells: %slots%~

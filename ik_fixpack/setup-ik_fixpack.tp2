@@ -463,3 +463,16 @@ BEGIN @530 DESIGNATED 530 LABEL ~ik_fixpack_tlk_girlboy~
 ALTER_TLK BEGIN
   REPLACE_TEXTUALLY EXACT_MATCH ~<PRO_BOYGIRL>~ ~<PRO_GIRLBOY>~
 END
+
+// ---------------------------------------------------------------------------------------------
+// Sorcery (QDSpontaneous) git-deff6a2 (a replacement install script): its library asks for two strings,
+// @10000001 and @10000002 (Sorcery/lib/qd_spontaneous.tpa lines 341 and 350), that Sorcery/tra/english/
+// setup.tra does not define, so WeiDU stops with "No translation provided" when component 0 runs.
+// This writes SetUp-Sorcery.tp2 in the game folder, a copy of Sorcery/SetUp-Sorcery.tp2 that also reads
+// our strings.tra (see fixes/sorcery/edits.tpp); Infinity Keeper then installs the mod from that copy.
+// Install it before Sorcery. The mod's own files are never changed.
+// Evidence: its README.md ("you must include a .tra file with these strings at these exact positions");
+// setup.tra @1 and @2 carry the same text the strings show.
+BEGIN @540 DESIGNATED 540 LABEL ~ik_fixpack_sorcery_strings~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 1406
+  STR_VAR source = ~Sorcery/SetUp-Sorcery.tp2~ target = ~SetUp-Sorcery.tp2~ edits = ~ik_fixpack/fixes/sorcery/edits.tpp~ END
