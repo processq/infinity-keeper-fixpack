@@ -629,3 +629,43 @@ LAF IK_FIXPACK_REPLACE INT_VAR size = 148226
 BEGIN @790 DESIGNATED 790 LABEL ~ik_fixpack_k0_iskp_potions_number~
 LAF IK_FIXPACK_REPLACE INT_VAR size = 86969
   STR_VAR source = ~k0_iskp/setup-k0_iskp.tp2~ target = ~k0_iskp/k0_iskp.tp2~ edits = ~ik_fixpack/fixes/k0_iskp/edits.tpp~ END
+
+// ---------------------------------------------------------------------------------------------
+// Wrong paths and file names in other mods' install scripts, found by the COPY check (each proven in the mod's own files:
+// the path the script names is not in the archive, the corrected one is). Install each before the mod it fixes.
+
+// Baldur's Gate Multi-Portrait Pack (bmpp) 0.14.2: three folder names spelt ruvan where the archive has ruven (tp2 lines 647, 655, 663)
+BEGIN @800 DESIGNATED 800 LABEL ~ik_fixpack_bmpp_ruven~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 40275
+  STR_VAR source = ~bmpp/setup-bmpp.tp2~ target = ~bmpp/bmpp.tp2~ edits = ~ik_fixpack/fixes/bmpp_ruven/edits.tpp~ END
+
+// RGR Warden v1.0.1: two COMPILE lines name knight01.dlg where the archive has knight01.d (tp2 lines 435, 444)
+BEGIN @810 DESIGNATED 810 LABEL ~ik_fixpack_rgr_warden_knight_d~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 34285
+  STR_VAR source = ~rgr_warden/setup-rgr_warden.tp2~ target = ~rgr_warden/rgr_warden.tp2~ edits = ~ik_fixpack/fixes/rgr_warden_knight_d/edits.tpp~ END
+
+// Better Heart of Fury git-40b263e: the EEex component copies M__MEFUN.LUA from a folder that does not hold it (tp2 line 24181)
+BEGIN @820 DESIGNATED 820 LABEL ~ik_fixpack_betterhof_lua_path~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 1208371
+  STR_VAR source = ~BetterHOF/BetterHOF.TP2~ target = ~BetterHOF/setup-BetterHOF.tp2~ edits = ~ik_fixpack/fixes/betterhof_lua_path/edits.tpp~ END
+
+// Drake v1.7a and git-9ea5fa1: six COPY sources name portraits/Drake*.bmp where the archive has alt-portrait/
+BEGIN @830 DESIGNATED 830 LABEL ~ik_fixpack_drake_portrait_folder~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 0
+  STR_VAR source = ~Drake/Setup-Drake.tp2~ target = ~Drake/Drake.tp2~ edits = ~ik_fixpack/fixes/drake_portrait_folder/edits.tpp~ END
+
+// Zakrion BG2 git-056c349: two portrait COPY sources one folder level short (tp2 lines 682, 683)
+BEGIN @840 DESIGNATED 840 LABEL ~ik_fixpack_zakrion_bg2_portraits~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 22324
+  STR_VAR source = ~Zakrion_BG2/Setup-Zakrion_BG2.tp2~ target = ~Zakrion_BG2/Zakrion_BG2.tp2~ edits = ~ik_fixpack/fixes/zakrion_bg2_portraits/edits.tpp~ END
+
+// BG1 Style Portraits v0.9.0: three portrait COPY sources name party_bg2 where the archive has party_bg2_mods (lib line 267 to 269)
+BEGIN @850 DESIGNATED 850 LABEL ~ik_fixpack_bg1style_portraits_folder~
+REQUIRE_PREDICATE FILE_EXISTS ~BG1StylePortraits/lib/bg2_mods_npc_portrait_patches.tph~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 5600
+  STR_VAR source = ~BG1StylePortraits/lib/bg2_mods_npc_portrait_patches.tph~ target = ~BG1StylePortraits/lib/bg2_mods_npc_portrait_patches.tph~ edits = ~ik_fixpack/fixes/bg1style_portraits_folder/edits.tpp~ END
+
+// Remastered Spell Icons v1.2: the msfm part copies a content/mods/msfm/green folder the archive does not have (tp2 line 100)
+BEGIN @860 DESIGNATED 860 LABEL ~ik_fixpack_remastered_spell_icons_msfm~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 4108
+  STR_VAR source = ~remastered_spell_icons/remastered_spell_icons.tp2~ target = ~remastered_spell_icons/setup-remastered_spell_icons.tp2~ edits = ~ik_fixpack/fixes/remastered_spell_icons_msfm/edits.tpp~ END

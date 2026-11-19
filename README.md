@@ -75,6 +75,13 @@ For plain WeiDU or another installer: install each fix you want at the place its
 | 770 `ik_fixpack_valen_tra_path` | Valen: Hellmouse v0.0.1 (valen/Setup-Valen.tp2) | replace | Install it before the mod. It writes valen/valen.tp2, a corrected copy; then install the mod from that copy. | BG2:EE, EET |
 | 780 `ik_fixpack_misc_ex_bam_name` | misc_ex v1 (misc_ex/misc_ex.tp2) | replace | Install it before the mod. It writes misc_ex/setup-misc_ex.tp2, a corrected copy; then install the mod from that copy. | BG:EE, SoD, BG2:EE, EET |
 | 790 `ik_fixpack_k0_iskp_potions_number` | SoD Items to BG2EE/EET v4.0.0 (k0_iskp/setup-k0_iskp.tp2) | replace | Install it before the mod. It writes k0_iskp/k0_iskp.tp2, a corrected copy in which the potions component has its own number (1096; the mod gives 1095 to two components); then install the mod from that copy. | BG2:EE, EET |
+| 800 `ik_fixpack_bmpp_ruven` | bmpp 0.14.2 (bmpp/setup-bmpp.tp2) | replace | Install it before the mod. It writes bmpp/bmpp.tp2, a corrected copy; then install the mod from that copy. | BG2:EE, EET |
+| 810 `ik_fixpack_rgr_warden_knight_d` | rgr_warden v1.0.1 (rgr_warden/setup-rgr_warden.tp2) | replace | Install it before the mod. It writes rgr_warden/rgr_warden.tp2, a corrected copy. | BG:EE, EET |
+| 820 `ik_fixpack_betterhof_lua_path` | Better Heart of Fury git-40b263e (BetterHOF/BetterHOF.TP2) | replace | Install it before the mod. It writes BetterHOF/setup-BetterHOF.tp2, a corrected copy. | BG2:EE, EET |
+| 830 `ik_fixpack_drake_portrait_folder` | Drake v1.7a and git-9ea5fa1 (Drake/Setup-Drake.tp2) | replace | Install it before the mod. It writes Drake/Drake.tp2, a corrected copy. | BG2:EE, EET |
+| 840 `ik_fixpack_zakrion_bg2_portraits` | Zakrion BG2 git-056c349 (Zakrion_BG2/Setup-Zakrion_BG2.tp2) | replace | Install it before the mod. It writes Zakrion_BG2/Zakrion_BG2.tp2, a corrected copy. | BG2:EE, EET |
+| 850 `ik_fixpack_bg1style_portraits_folder` | BG1 Style Portraits v0.9.0 (BG1StylePortraits/lib/bg2_mods_npc_portrait_patches.tph) | before | Before the mod, with its files in place: fixes a folder name in the mod's library file. | BG2:EE |
+| 860 `ik_fixpack_remastered_spell_icons_msfm` | Remastered Spell Icons v1.2 (remastered_spell_icons/remastered_spell_icons.tp2) | replace | Install it before the mod. It writes remastered_spell_icons/setup-remastered_spell_icons.tp2, a corrected copy. | BG:EE, SoD, BG2:EE, EET |
 
 ## Licence
 

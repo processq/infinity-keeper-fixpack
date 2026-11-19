@@ -73,4 +73,11 @@
 @770 = ~Valen: install script with the right path of the dialogue translations~
 @780 = ~misc_ex: install script with the right name of a BAM file (SPCCWOUI); install before the mod~
 @790 = ~SoD Items to BG2EE/EET v4.0.0: install script where the potions component has its own number (1096); install before the mod~
+@800 = ~Baldur's Gate Multi-Portrait Pack (bmpp) 0.14.2: corrected path in the install script (install before the mod)~
+@810 = ~RGR Warden v1.0.1: corrected path in the install script (install before the mod)~
+@820 = ~Better Heart of Fury git-40b263e: corrected path in the install script (install before the mod)~
+@830 = ~Drake v1.7a and git-9ea5fa1: corrected path in the install script (install before the mod)~
+@840 = ~Zakrion BG2 git-056c349: corrected path in the install script (install before the mod)~
+@850 = ~BG1 Style Portraits v0.9.0: corrected path in the install script (install before the mod)~
+@860 = ~Remastered Spell Icons v1.2: corrected path in the install script (install before the mod)~
 @1006 = ~Infinity Keeper Fixpack: install the mod this fixes first (its files must be in the game folder).~
