@@ -586,12 +586,12 @@ BEGIN @710 DESIGNATED 710 LABEL ~ik_fixpack_late_fixes_copy_target~
 LAF IK_FIXPACK_REPLACE INT_VAR size = 158
   STR_VAR source = ~late_fixes.tp2~ target = ~late_fixes/setup-late_fixes.tp2~ edits = ~ik_fixpack/fixes/late_fixes/edits.tpp~ END
 
-// Leshy Kit: Leshy/Setup-Leszy.TP2 names its files Leshy\X (lines 39-52) and Leszy\LESHY.2DA (line 15); they are in
-// Leshy/LESHY/. The script's own name (Leszy) is not its folder's (Leshy), so the copy goes in the game folder's top; its
-// BACKUP line names Leshy, which then is the mod's folder.
+// Leshy Kit (in place): Leshy/Setup-Leszy.TP2 names its files Leshy\X (lines 39-52) and Leszy\LESHY.2DA (line 15); they are
+// in Leshy/LESHY/. The author's script is edited where it sits (the folder is not moved or renamed), install this before the mod.
 BEGIN @720 DESIGNATED 720 LABEL ~ik_fixpack_leshy_kit_paths~
+REQUIRE_PREDICATE FILE_EXISTS ~Leshy/Setup-Leszy.TP2~ @1006
 LAF IK_FIXPACK_REPLACE INT_VAR size = 2784
-  STR_VAR source = ~Leshy/Setup-Leszy.TP2~ target = ~Setup-Leszy.TP2~ edits = ~ik_fixpack/fixes/leshy_kit/edits.tpp~ END
+  STR_VAR source = ~Leshy/Setup-Leszy.TP2~ target = ~Leshy/Setup-Leszy.TP2~ edits = ~ik_fixpack/fixes/leshy_kit/edits.tpp~ END
 
 // Multi-Stronghold v0: setup-multistronghold.tp2 line 16 names multistronghold/bg2tweak//bg2tweak/%script%.baf; the scripts
 // are directly in multistronghold/bg2tweak/. Its BACKUP names another folder (stratagems_external), so the copy goes in the
