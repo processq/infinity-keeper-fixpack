@@ -476,3 +476,44 @@ END
 BEGIN @540 DESIGNATED 540 LABEL ~ik_fixpack_sorcery_strings~
 LAF IK_FIXPACK_REPLACE INT_VAR size = 1406
   STR_VAR source = ~Sorcery/SetUp-Sorcery.tp2~ target = ~SetUp-Sorcery.tp2~ edits = ~ik_fixpack/fixes/sorcery/edits.tpp~ END
+
+// ---------------------------------------------------------------------------------------------
+// Detectable Spells library: copies in these mods rebuild STATS.IDS with a variable named like the array they then fill;
+// WeiDU 251 fills an array of that name too, so the old rows land in STATS.IDS (found with a reproduction on a fake game:
+// 5 lines became 15). Each component edits the mod's placed copy of its ds.tph before the mod runs (fixes/<name>/edits.tpp);
+// install it before the mod. Evidence: data/scan of the cached archives, 2026-11-19; the edit is a rename of four lines.
+
+BEGIN @550 DESIGNATED 550 LABEL ~ik_fixpack_rr_ds_stats~
+REQUIRE_PREDICATE FILE_EXISTS ~rr/lib/ds/ds.tph~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 29931
+  STR_VAR source = ~rr/lib/ds/ds.tph~ target = ~rr/lib/ds/ds.tph~ edits = ~ik_fixpack/fixes/rr_ds_stats/edits.tpp~ END
+
+BEGIN @560 DESIGNATED 560 LABEL ~ik_fixpack_bp_ds_stats~
+REQUIRE_PREDICATE FILE_EXISTS ~BP/DS/ds.tph~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 31308
+  STR_VAR source = ~BP/DS/ds.tph~ target = ~BP/DS/ds.tph~ edits = ~ik_fixpack/fixes/bp_ds_stats/edits.tpp~ END
+
+BEGIN @570 DESIGNATED 570 LABEL ~ik_fixpack_bpseries_ds_stats~
+REQUIRE_PREDICATE FILE_EXISTS ~bpseries/ds/ds.tph~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 31308
+  STR_VAR source = ~bpseries/ds/ds.tph~ target = ~bpseries/ds/ds.tph~ edits = ~ik_fixpack/fixes/bpseries_ds_stats/edits.tpp~ END
+
+BEGIN @580 DESIGNATED 580 LABEL ~ik_fixpack_c4gas_ds_stats~
+REQUIRE_PREDICATE FILE_EXISTS ~c4GAS/lib/ds/ds.tph~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 71755
+  STR_VAR source = ~c4GAS/lib/ds/ds.tph~ target = ~c4GAS/lib/ds/ds.tph~ edits = ~ik_fixpack/fixes/c4gas_ds_stats/edits.tpp~ END
+
+BEGIN @590 DESIGNATED 590 LABEL ~ik_fixpack_eseries_ds_stats~
+REQUIRE_PREDICATE FILE_EXISTS ~eseries/ds/ds.tph~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 72636
+  STR_VAR source = ~eseries/ds/ds.tph~ target = ~eseries/ds/ds.tph~ edits = ~ik_fixpack/fixes/eseries_ds_stats/edits.tpp~ END
+
+BEGIN @600 DESIGNATED 600 LABEL ~ik_fixpack_item_rev_ds_stats~
+REQUIRE_PREDICATE FILE_EXISTS ~item_rev/ds/ds.tph~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 52901
+  STR_VAR source = ~item_rev/ds/ds.tph~ target = ~item_rev/ds/ds.tph~ edits = ~ik_fixpack/fixes/item_rev_ds_stats/edits.tpp~ END
+
+BEGIN @610 DESIGNATED 610 LABEL ~ik_fixpack_spell_rev_ds_stats~
+REQUIRE_PREDICATE FILE_EXISTS ~spell_rev/lib/ds.tph~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 70986
+  STR_VAR source = ~spell_rev/lib/ds.tph~ target = ~spell_rev/lib/ds.tph~ edits = ~ik_fixpack/fixes/spell_rev_ds_stats/edits.tpp~ END
