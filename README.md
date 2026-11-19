@@ -74,6 +74,7 @@ For plain WeiDU or another installer: install each fix you want at the place its
 | 760 `ik_fixpack_sorc_tweak_paths` | Sorcery tweak git-6c54023 (sorc_tweak/sorc_tweak.tp2) | replace | Install it before the mod. It writes sorc_tweak/setup-sorc_tweak.tp2, a corrected copy; then install the mod from that copy. | BG:EE, SoD, BG2:EE, EET, IWD:EE |
 | 770 `ik_fixpack_valen_tra_path` | Valen: Hellmouse v0.0.1 (valen/Setup-Valen.tp2) | replace | Install it before the mod. It writes valen/valen.tp2, a corrected copy; then install the mod from that copy. | BG2:EE, EET |
 | 780 `ik_fixpack_misc_ex_bam_name` | misc_ex v1 (misc_ex/misc_ex.tp2) | replace | Install it before the mod. It writes misc_ex/setup-misc_ex.tp2, a corrected copy; then install the mod from that copy. | BG:EE, SoD, BG2:EE, EET |
+| 790 `ik_fixpack_k0_iskp_potions_number` | SoD Items to BG2EE/EET v4.0.0 (k0_iskp/setup-k0_iskp.tp2) | replace | Install it before the mod. It writes k0_iskp/k0_iskp.tp2, a corrected copy in which the potions component has its own number (1096; the mod gives 1095 to two components); then install the mod from that copy. | BG2:EE, EET |
 
 ## Licence
 

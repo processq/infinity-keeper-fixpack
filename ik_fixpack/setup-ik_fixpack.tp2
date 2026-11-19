@@ -620,3 +620,12 @@ LAF IK_FIXPACK_REPLACE INT_VAR size = 8550
 BEGIN @780 DESIGNATED 780 LABEL ~ik_fixpack_misc_ex_bam_name~
 LAF IK_FIXPACK_REPLACE INT_VAR size = 148226
   STR_VAR source = ~misc_ex/misc_ex.tp2~ target = ~misc_ex/setup-misc_ex.tp2~ edits = ~ik_fixpack/fixes/misc_ex/edits.tpp~ END
+
+// ---------------------------------------------------------------------------------------------
+// SoD Items to BG2EE/EET (k0_iskp) v4.0.0 (a replacement install script): two components have DESIGNATED 1095
+// (k0_iskp/setup-k0_iskp.tp2 lines 795 and 803: green_dragonscale_armour and potion_of_persuasiveness); WeiDU lists only the
+// first, so the potions can't be picked. The corrected copy k0_iskp/k0_iskp.tp2 gives the potions 1096; install the mod from it.
+// Evidence: weidu --list-components lists #1095 once and no potion component; the tp2 lines 795 and 803.
+BEGIN @790 DESIGNATED 790 LABEL ~ik_fixpack_k0_iskp_potions_number~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 86969
+  STR_VAR source = ~k0_iskp/setup-k0_iskp.tp2~ target = ~k0_iskp/k0_iskp.tp2~ edits = ~ik_fixpack/fixes/k0_iskp/edits.tpp~ END
