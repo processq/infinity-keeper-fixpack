@@ -71,4 +71,5 @@
 @730 = ~Multi-Stronghold: install script with the right path of the cleric stronghold scripts~
 @760 = ~Sorcery tweak: install script with the right paths to the mod's files~
 @770 = ~Valen: install script with the right path of the dialogue translations~
+@780 = ~misc_ex: install script with the right name of a BAM file (SPCCWOUI); install before the mod~
 @1006 = ~Infinity Keeper Fixpack: install the mod this fixes first (its files must be in the game folder).~

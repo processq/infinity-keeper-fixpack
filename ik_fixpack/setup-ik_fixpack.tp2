@@ -613,3 +613,10 @@ LAF IK_FIXPACK_REPLACE INT_VAR size = 479
 BEGIN @770 DESIGNATED 770 LABEL ~ik_fixpack_valen_tra_path~
 LAF IK_FIXPACK_REPLACE INT_VAR size = 8550
   STR_VAR source = ~valen/Setup-Valen.tp2~ target = ~valen/valen.tp2~ edits = ~ik_fixpack/fixes/valen_hellmouse/edits.tpp~ END
+
+// misc_ex v1 (a replacement install script): line 26 copies misc_ex/newspellwi/SPCCWOUL.BAM, a file the archive does not have
+// (it holds SPCCWOUI.BAM), so the install stops. misc_ex/setup-misc_ex.tp2 is the corrected copy; install the mod from it.
+// Evidence: misc_ex/misc_ex.tp2 line 26 against misc_ex/newspellwi/ in the archive.
+BEGIN @780 DESIGNATED 780 LABEL ~ik_fixpack_misc_ex_bam_name~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 148226
+  STR_VAR source = ~misc_ex/misc_ex.tp2~ target = ~misc_ex/setup-misc_ex.tp2~ edits = ~ik_fixpack/fixes/misc_ex/edits.tpp~ END
