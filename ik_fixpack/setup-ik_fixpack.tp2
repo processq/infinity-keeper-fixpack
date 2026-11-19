@@ -669,3 +669,26 @@ LAF IK_FIXPACK_REPLACE INT_VAR size = 5600
 BEGIN @860 DESIGNATED 860 LABEL ~ik_fixpack_remastered_spell_icons_msfm~
 LAF IK_FIXPACK_REPLACE INT_VAR size = 4108
   STR_VAR source = ~remastered_spell_icons/remastered_spell_icons.tp2~ target = ~remastered_spell_icons/setup-remastered_spell_icons.tp2~ edits = ~ik_fixpack/fixes/remastered_spell_icons_msfm/edits.tpp~ END
+
+
+// Smoke and Mirrors git-3a7449b: lib/ClassSpellTool.TPA copies three files from a no_overwrite folder that is under ClassSpellTool/ (lines 28, 29, 33)
+BEGIN @870 DESIGNATED 870 LABEL ~ik_fixpack_smoke_and_mirrors_notool_paths~
+REQUIRE_PREDICATE FILE_EXISTS ~Smoke_and_Mirrors/lib/ClassSpellTool.TPA~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 26894
+  STR_VAR source = ~Smoke_and_Mirrors/lib/ClassSpellTool.TPA~ target = ~Smoke_and_Mirrors/lib/ClassSpellTool.TPA~ edits = ~ik_fixpack/fixes/smoke_and_mirrors_notool_paths/edits.tpp~ END
+
+// Spells and Magic git-ec2d141: lib/ClassSpellTool.TPA copies three files from a no_overwrite folder that is under ClassSpellTool/ (lines 28, 29, 33)
+BEGIN @880 DESIGNATED 880 LABEL ~ik_fixpack_spells_and_magic_notool_paths~
+REQUIRE_PREDICATE FILE_EXISTS ~Spells_and_Magic/lib/ClassSpellTool.TPA~ @1006
+LAF IK_FIXPACK_REPLACE INT_VAR size = 26894
+  STR_VAR source = ~Spells_and_Magic/lib/ClassSpellTool.TPA~ target = ~Spells_and_Magic/lib/ClassSpellTool.TPA~ edits = ~ik_fixpack/fixes/spells_and_magic_notool_paths/edits.tpp~ END
+
+// Aura for BG1 git-42ceed5: the EET portrait choice copies secondbg2/AuraL, M and S, which the archive names Aura2L, M and S (tp2 lines 189 to 191)
+BEGIN @890 DESIGNATED 890 LABEL ~ik_fixpack_aura_bg1_second_portrait~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 13690
+  STR_VAR source = ~Aura_BG1/Setup-Aura_BG1.tp2~ target = ~Aura_BG1/Aura_BG1.tp2~ edits = ~ik_fixpack/fixes/aura_bg1_second_portrait/edits.tpp~ END
+
+// Darian v2.5: line 96 names t1dar25p.j where the archive has t1dar25p.d.
+BEGIN @900 DESIGNATED 900 LABEL ~ik_fixpack_darian_j_to_d~
+LAF IK_FIXPACK_REPLACE INT_VAR size = 17018
+  STR_VAR source = ~darian/darian.tp2~ target = ~darian/setup-darian.tp2~ edits = ~ik_fixpack/fixes/darian_j_to_d/edits.tpp~ END

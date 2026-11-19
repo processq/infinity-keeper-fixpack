@@ -82,6 +82,10 @@ For plain WeiDU or another installer: install each fix you want at the place its
 | 840 `ik_fixpack_zakrion_bg2_portraits` | Zakrion BG2 git-056c349 (Zakrion_BG2/Setup-Zakrion_BG2.tp2) | replace | Install it before the mod. It writes Zakrion_BG2/Zakrion_BG2.tp2, a corrected copy. | BG2:EE, EET |
 | 850 `ik_fixpack_bg1style_portraits_folder` | BG1 Style Portraits v0.9.0 (BG1StylePortraits/lib/bg2_mods_npc_portrait_patches.tph) | before | Before the mod, with its files in place: fixes a folder name in the mod's library file. | BG2:EE |
 | 860 `ik_fixpack_remastered_spell_icons_msfm` | Remastered Spell Icons v1.2 (remastered_spell_icons/remastered_spell_icons.tp2) | replace | Install it before the mod. It writes remastered_spell_icons/setup-remastered_spell_icons.tp2, a corrected copy. | BG:EE, SoD, BG2:EE, EET |
+| 870 `ik_fixpack_smoke_and_mirrors_notool_paths` | Smoke and Mirrors git-3a7449b (Smoke_and_Mirrors/lib/ClassSpellTool.TPA) | before | Before the mod, with its files in place: fixes three paths in the mod's library file. | BG2:EE, EET |
+| 880 `ik_fixpack_spells_and_magic_notool_paths` | Spells and Magic git-ec2d141 (Spells_and_Magic/lib/ClassSpellTool.TPA) | before | Before the mod, with its files in place: fixes three paths in the mod's library file. | BG2:EE, EET |
+| 890 `ik_fixpack_aura_bg1_second_portrait` | Aura for BG1 git-42ceed5 (Aura_BG1/Setup-Aura_BG1.tp2) | replace | Install it before the mod. It writes Aura_BG1/Aura_BG1.tp2, a corrected copy. | EET |
+| 900 `ik_fixpack_darian_j_to_d` | Darian v2.5 (darian/darian.tp2) | replace | Install it before the mod. It writes darian/setup-darian.tp2, a corrected copy. | BG2:EE, EET |
 
 ## Licence
 

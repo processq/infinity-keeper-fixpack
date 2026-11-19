@@ -80,4 +80,8 @@
 @840 = ~Zakrion BG2 git-056c349: corrected path in the install script (install before the mod)~
 @850 = ~BG1 Style Portraits v0.9.0: corrected path in the install script (install before the mod)~
 @860 = ~Remastered Spell Icons v1.2: corrected path in the install script (install before the mod)~
+@870 = ~Smoke and Mirrors git-3a7449b: corrected path in the install script (install before the mod)~
+@880 = ~Spells and Magic git-ec2d141: corrected path in the install script (install before the mod)~
+@890 = ~Aura for BG1 git-42ceed5: corrected path in the install script (install before the mod)~
+@900 = ~Darian v2.5: corrected file name in the install script (install before the mod)~
 @1006 = ~Infinity Keeper Fixpack: install the mod this fixes first (its files must be in the game folder).~
